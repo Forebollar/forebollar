@@ -113,28 +113,28 @@
         const { Container, Navbar, Nav, Jumbotron, Button, Row, Col, Card, Form, Carousel, Modal } = ReactBootstrap;
 
         const products = [
-            { id: 1, name: 'Pro V1 12 st', description: 'Världens mest spelade golfboll, nu till 1/5 av butiks värdet! Välj mellan A, B och C klass.', price: 129, selectable: true, image: 'Pro-V1.jpg', recommended: true },
-            { id: 2, name: 'Taylormade MIX 12 st', description: 'Blandade golfbollar från Taylormade', price: 89, selectable: false, image: 'taylormade.jpg', },
-            { id: 3, name: 'Callaway MIX 12 st', description: 'Blandade golfbollar från Callaway', price: 89, selectable: false, image: 'callaway.jpg' },
-            { id: 4, name: 'Tour MIX 12 st', description: 'Tour Golfbollar till bra pris, från: Taylormade, Callaway, Bridgestone, Srixon m.m.', oldPrice: 139, price: 119, selectable: false, image: 'tour-mix.jpg', deal: true },
-            { id: 5, name: 'Floridabollar MIX 20 st', description: 'Golfbollar till lägsta möjliga pris, från: Vice, Bridgestone, Wilson, Pinacle, m.m.', price: 69, selectable: false, image: 'florida-mix.jpg' },
-            { id: 6, name: 'Färg MIX 6 st', description: 'Blandade färgade golfbollar från märken som Titleist, Callaway, m.m.', price: 59, selectable: false, image: 'färg-mix.jpg', },
+            { id: 1, name: 'Titleist Pro V1', description: 'Världens mest spelade golfboll, nu till 1/5 av butiks värdet! Välj mellan A, B och C klass.', price: 129, selectable: true, image: 'Pro-V1.jpg', recommended: true },
+            { id: 2, name: 'Tour MIX', description: 'Tour Golfbollar till bra pris, från: Titleist, Taylormade, Callaway, Bridgestone, Srixon m.m.', oldPrice: 139, price: 119, selectable: false, image: 'tour-mix.jpg', deal: true },
+            { id: 3, name: 'Floridabollar MIX', description: 'Golfbollar till lägsta möjliga pris, från: Vice, Bridgestone, Wilson, Pinacle, m.m.', oldPrice: 59, price: 49, selectable: false, image: 'florida-mix.jpg' },
+            { id: 4, name: 'Taylormade MIX', description: 'Blandade golfbollar från Taylormade', price: 99, selectable: false, image: 'taylormade.jpg', },
+            { id: 5, name: 'Callaway MIX', description: 'Blandade golfbollar från Callaway', price: 99, selectable: false, image: 'callaway.jpg' },
+            { id: 6, name: 'Färg MIX', description: 'Blandade färgade golfbollar från märken som Titleist, Callaway, m.m.', price: 149, selectable: false, image: 'färg-mix.jpg', },
         ];
 
         const App = () => {
             const [cart, setCart] = React.useState([]);
             const [showCart, setShowCart] = React.useState(false);
 
-            const addToCart = (product, quantity, selectedClass = 'C') => {
+            const addToCart = (product, dozens, selectedClass = 'C') => {
                 const existingProduct = cart.find(item => item.id === product.id && item.selectedClass === selectedClass);
                 if (existingProduct) {
                     setCart(cart.map(item =>
                         item.id === product.id && item.selectedClass === selectedClass
-                            ? { ...item, quantity: item.quantity + quantity }
+                            ? { ...item, dozens: item.dozens + dozens }
                             : item
                     ));
                 } else {
-                    setCart([...cart, { ...product, quantity, selectedClass }]);
+                    setCart([...cart, { ...product, dozens, selectedClass }]);
                 }
             };
 
@@ -144,21 +144,21 @@
                 setCart(newCart);
             };
 
-            const updateCartItemQuantity = (index, quantity) => {
+            const updateCartItemDozens = (index, dozens) => {
                 const newCart = [...cart];
-                newCart[index].quantity = quantity;
+                newCart[index].dozens = dozens;
                 setCart(newCart);
             };
 
             const sendEmail = () => {
                 const email = "forebollar@gmail.com";
                 const subject = "Beställning av golfbollar";
-                const body = cart.map(item => `${item.name} - Klass: ${item.selectedClass} - Antal: ${item.quantity} - Pris: ${item.price} SEK`).join("\n");
+                const body = cart.map(item => `${item.name} - Klass: ${item.selectedClass} - Antal dussin: ${item.dozens} - Pris: ${item.price * item.dozens} SEK`).join("\n");
                 window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             };
 
             const getTotalPrice = () => {
-                return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+                return cart.reduce((total, item) => total + (item.price * item.dozens), 0);
             };
 
             return (
@@ -181,12 +181,12 @@
                             {cart.map((item, index) => (
                                 <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
                                     <div>
-                                        {item.name} - Klass: {item.selectedClass} - Antal: 
+                                        {item.name} - Klass: {item.selectedClass} - Antal dussin: 
                                         <Form.Control 
                                             type="number" 
                                             min="1" 
-                                            value={item.quantity} 
-                                            onChange={(e) => updateCartItemQuantity(index, Number(e.target.value))} 
+                                            value={item.dozens} 
+                                            onChange={(e) => updateCartItemDozens(index, Number(e.target.value))} 
                                             style={{ width: '70px', display: 'inline-block', marginLeft: '10px' }} 
                                         />
                                     </div>
@@ -224,15 +224,17 @@
 
         const ProductCard = ({ product, addToCart }) => {
             const [selectedClass, setSelectedClass] = React.useState('C');
-            const [quantity, setQuantity] = React.useState(1);
+            const [dozens, setDozens] = React.useState(1);
+
             const priceForClass = selectedClass === 'A' ? product.price + 40 : selectedClass === 'B' ? product.price + 20 : product.price;
+            const oldPriceForClass = product.oldPrice ? selectedClass === 'A' ? product.oldPrice + 40 : selectedClass === 'B' ? product.oldPrice + 20 : product.oldPrice : null;
 
             const handleSelectChange = (event) => {
                 setSelectedClass(event.target.value);
             };
 
-            const handleQuantityChange = (event) => {
-                setQuantity(Number(event.target.value));
+            const handleDozensChange = (event) => {
+                setDozens(Number(event.target.value));
             };
 
             return (
@@ -253,8 +255,8 @@
                         <Card.Text>{product.description}</Card.Text>
                         {product.deal && <span className="badge badge-danger">Erbjudande</span>}
                         <div>
-                            {product.oldPrice && <span className="old-price">{product.oldPrice} SEK</span>}
-                            <span>{priceForClass * quantity} SEK</span> {/* Display total price for the quantity selected */}
+                            {oldPriceForClass && <span className="old-price">{oldPriceForClass * dozens} SEK</span>}
+                            <span>{priceForClass * dozens} SEK</span> {/* Display total price for the dozens selected */}
                         </div>
                         {product.selectable && (
                             <Form.Group controlId="classSelect">
@@ -266,11 +268,15 @@
                                 </Form.Control>
                             </Form.Group>
                         )}
-                        <Form.Group controlId="quantitySelect">
-                            <Form.Label>Antal:</Form.Label>
-                            <Form.Control type="number" min="1" value={quantity} onChange={handleQuantityChange} />
+                        <Form.Group controlId="dozensSelect">
+                            <Form.Label>Antal dussin:</Form.Label>
+                            <Form.Control as="select" value={dozens} onChange={handleDozensChange}>
+                                <option value="1">12 st</option>
+                                <option value="2">24 st</option>
+                                <option value="4">48 st</option>
+                            </Form.Control>
                         </Form.Group>
-                        <Button variant="primary varukorg" onClick={() => addToCart(product, quantity, selectedClass)}>
+                        <Button variant="primary varukorg" onClick={() => addToCart(product, dozens, selectedClass)}>
                             Lägg till i varukorgen
                         </Button>
                     </Card.Body>
