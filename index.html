@@ -94,8 +94,32 @@
         }
 
         .varukorg {
-          background-color: darkblue;
-          border: none;
+            background-color: darkblue;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .added-to-cart-message {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 1.2rem;
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        .show-message {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
@@ -124,18 +148,23 @@
         const App = () => {
             const [cart, setCart] = React.useState([]);
             const [showCart, setShowCart] = React.useState(false);
+            const [showMessage, setShowMessage] = React.useState(false);
 
             const addToCart = (product, dozens, selectedClass = 'C') => {
-                const existingProduct = cart.find(item => item.id === product.id && item.selectedClass === selectedClass);
-                if (existingProduct) {
-                    setCart(cart.map(item =>
-                        item.id === product.id && item.selectedClass === selectedClass
-                            ? { ...item, dozens: item.dozens + dozens }
-                            : item
-                    ));
-                } else {
-                    setCart([...cart, { ...product, dozens, selectedClass }]);
-                }
+                setShowMessage(true);
+                setTimeout(() => {
+                    const existingProduct = cart.find(item => item.id === product.id && item.selectedClass === selectedClass);
+                    if (existingProduct) {
+                        setCart(cart.map(item =>
+                            item.id === product.id && item.selectedClass === selectedClass
+                                ? { ...item, dozens: item.dozens + dozens }
+                                : item
+                        ));
+                    } else {
+                        setCart([...cart, { ...product, dozens, selectedClass }]);
+                    }
+                    setTimeout(() => setShowMessage(false), 2000); // Hide message after 2 seconds
+                }, 500); // Show message for 0.5 seconds
             };
 
             const removeFromCart = (index) => {
@@ -181,27 +210,29 @@
                             {cart.map((item, index) => (
                                 <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
                                     <div>
-                                        {item.name} - Klass: {item.selectedClass} - Antal dussin: 
-                                        <Form.Control 
-                                            type="number" 
-                                            min="1" 
-                                            value={item.dozens} 
-                                            onChange={(e) => updateCartItemDozens(index, Number(e.target.value))} 
-                                            style={{ width: '70px', display: 'inline-block', marginLeft: '10px' }} 
-                                        />
+                                        {item.name} - {item.selectedClass} - Antal dussin: {item.dozens}
                                     </div>
-                                    <Button variant="danger" size="sm" className="remove-button" onClick={() => removeFromCart(index)}>
-                                        <i className="fas fa-trash-alt"></i>
-                                    </Button>
+                                    <div>
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            value={item.dozens}
+                                            onChange={(e) => updateCartItemDozens(index, Number(e.target.value))}
+                                            className="mr-2"
+                                        />
+                                        <Button variant="danger" className="remove-button" onClick={() => removeFromCart(index)}>
+                                            <i className="fas fa-trash"></i>
+                                        </Button>
+                                    </div>
                                 </li>
                             ))}
                         </ul>
                         <div className="mt-3">
-                            <h5>Totalpris: {getTotalPrice()} SEK</h5>
+                            <h5>Total: {getTotalPrice()} SEK</h5>
+                            <Button variant="success" onClick={sendEmail} disabled={cart.length === 0}>
+                                <i className="fas fa-paper-plane"></i> Skicka beställning
+                            </Button>
                         </div>
-                        <Button className="mt-3 cart-button" variant="success" onClick={sendEmail} disabled={cart.length === 0}>
-                            <i className="fas fa-paper-plane"></i> Skicka beställning
-                        </Button>
                     </div>
 
                     <Jumbotron className="text-center">
@@ -225,6 +256,7 @@
         const ProductCard = ({ product, addToCart }) => {
             const [selectedClass, setSelectedClass] = React.useState('C');
             const [dozens, setDozens] = React.useState(1);
+            const [showMessage, setShowMessage] = React.useState(false);
 
             const priceForClass = selectedClass === 'A' ? product.price + 40 : selectedClass === 'B' ? product.price + 20 : product.price;
             const oldPriceForClass = product.oldPrice ? selectedClass === 'A' ? product.oldPrice + 40 : selectedClass === 'B' ? product.oldPrice + 20 : product.oldPrice : null;
@@ -235,6 +267,12 @@
 
             const handleDozensChange = (event) => {
                 setDozens(Number(event.target.value));
+            };
+
+            const handleAddToCart = () => {
+                setShowMessage(true);
+                addToCart(product, dozens, selectedClass);
+                setTimeout(() => setShowMessage(false), 2000); // Hide message after 2 seconds
             };
 
             return (
@@ -276,8 +314,11 @@
                                 <option value="4">48 st</option>
                             </Form.Control>
                         </Form.Group>
-                        <Button variant="primary varukorg" onClick={() => addToCart(product, dozens, selectedClass)}>
+                        <Button variant="primary varukorg" onClick={handleAddToCart}>
                             Lägg till i varukorgen
+                            <div className={`added-to-cart-message ${showMessage ? 'show-message' : ''}`}>
+                                Artikeln tillagd!
+                            </div>
                         </Button>
                     </Card.Body>
                 </Card>
