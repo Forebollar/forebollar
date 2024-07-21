@@ -113,12 +113,12 @@
         const { Container, Navbar, Nav, Jumbotron, Button, Row, Col, Card, Form, Carousel, Modal } = ReactBootstrap;
 
         const products = [
-            { id: 1, name: 'Pro V1 12 st', description: 'Världens mest spelade golfboll, nu till 1/5 av butiks värdet! Välj mellan A, B och C klass.', price: 109, selectable: true, image: 'Pro-V1.jpg', recommended: true },
+            { id: 1, name: 'Pro V1 12 st', description: 'Världens mest spelade golfboll, nu till 1/5 av butiks värdet! Välj mellan A, B och C klass.', price: 129, selectable: true, image: 'Pro-V1.jpg', recommended: true },
             { id: 2, name: 'Taylormade MIX 12 st', description: 'Blandade golfbollar från Taylormade', price: 89, selectable: false, image: 'taylormade.jpg', },
             { id: 3, name: 'Callaway MIX 12 st', description: 'Blandade golfbollar från Callaway', price: 89, selectable: false, image: 'callaway.jpg' },
-            { id: 4, name: 'Tour MIX 12 st', description: 'Tour Golfbollar till bra pris, från: Taylormade, Callaway, Bridgestone, Srixon m.m.', oldPrice: 119, price: 99, selectable: false, image: 'tour-mix.jpg', deal: true },
+            { id: 4, name: 'Tour MIX 12 st', description: 'Tour Golfbollar till bra pris, från: Taylormade, Callaway, Bridgestone, Srixon m.m.', oldPrice: 139, price: 119, selectable: false, image: 'tour-mix.jpg', deal: true },
             { id: 5, name: 'Floridabollar MIX 20 st', description: 'Golfbollar till lägsta möjliga pris, från: Vice, Bridgestone, Wilson, Pinacle, m.m.', price: 69, selectable: false, image: 'florida-mix.jpg' },
-            { id: 6, name: 'Färg MIX 6 st', description: 'Blandade färgade golfbollar från märken som Titleist, Callaway, m.m.', price: 49, selectable: false, image: 'färg-mix.jpg', },
+            { id: 6, name: 'Färg MIX 6 st', description: 'Blandade färgade golfbollar från märken som Titleist, Callaway, m.m.', price: 59, selectable: false, image: 'färg-mix.jpg', },
         ];
 
         const App = () => {
@@ -225,7 +225,7 @@
         const ProductCard = ({ product, addToCart }) => {
             const [selectedClass, setSelectedClass] = React.useState('C');
             const [quantity, setQuantity] = React.useState(1);
-            const priceForClass = selectedClass === 'A' ? product.price + 20 : selectedClass === 'B' ? product.price + 10 : product.price;
+            const priceForClass = selectedClass === 'A' ? product.price + 40 : selectedClass === 'B' ? product.price + 20 : product.price;
 
             const handleSelectChange = (event) => {
                 setSelectedClass(event.target.value);
