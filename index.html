@@ -134,7 +134,7 @@
 
     <!-- Your React Code -->
     <script type="text/babel">
-        const { Container, Navbar, Nav, Jumbotron, Button, Row, Col, Card, Form, Carousel, Modal } = ReactBootstrap;
+        const { Container, Navbar, Nav, Jumbotron, Button, Row, Col, Card, Form, Carousel, Modal, Table } = ReactBootstrap;
 
         const products = [
             { id: 1, name: 'Titleist Pro V1', description: 'Världens mest spelade golfboll, nu till 1/5 av butiks värdet! Välj mellan A, B och C klass.', price: 129, selectable: true, image: 'Pro-V1.jpg', recommended: true },
@@ -145,10 +145,26 @@
             { id: 6, name: 'Färg MIX', description: 'Blandade färgade golfbollar från märken som Titleist, Callaway, m.m.', price: 149, selectable: false, image: 'färg-mix.jpg', },
         ];
 
+        const customProducts = [
+            { id: 1, name: 'Titleist Pro V1', price: 16, image: 'Pro-V1.jpg' },
+            { id: 2, name: 'Titleist Pro V1x', price: 16, image: 'Pro-V1x.jpg' },
+            { id: 3, name: 'Titleist AVX', price: 16, image: 'titleist-avx.jpg' },
+            { id: 4, name: 'Titleist Pro Tour Soft', price: 12, image: 'titleist-tour-soft.jpg' },
+            { id: 5, name: 'Titleist Tour Speed', price: 12, image: 'titleist-tour-speed.jpg' },
+            { id: 6, name: 'Taylormade TP5', price: 16, image: 'taylormade-tp5.jpg' },
+            { id: 7, name: 'Taylormade TP5 Pix', price: 17, image: 'taylormade-pix.jpg' },
+            { id: 8, name: 'Callaway Chrome Soft', price: 14, image: 'chromesoft.jpg' },
+            { id: 9, name: 'Callaway ERC Soft', price: 14, image: 'erc-soft.jpg' },
+            { id: 10, name: 'Callaway Supersoft', price: 12, image: 'callaway-supersoft.jpg' },
+            { id: 11, name: 'Bridgestone Tour B XS', price: 14, image: 'tour-b-xs.jpg' },
+            { id: 12, name: 'Färgboll', price: 14, image: 'färg.jpg' },
+        ];
+
         const App = () => {
             const [cart, setCart] = React.useState([]);
             const [showCart, setShowCart] = React.useState(false);
             const [showMessage, setShowMessage] = React.useState(false);
+            const [customDozen, setCustomDozen] = React.useState([]);
 
             const addToCart = (product, dozens, selectedClass = 'C') => {
                 setShowMessage(true);
@@ -182,12 +198,53 @@
             const sendEmail = () => {
                 const email = "forebollar@gmail.com";
                 const subject = "Beställning av golfbollar";
-                const body = cart.map(item => `${item.name} - Klass: ${item.selectedClass} - Antal dussin: ${item.dozens} - Pris: ${item.price * item.dozens} SEK`).join("\n");
+                const body = cart.map(item => {
+                    if (item.items) {
+                        // Hantera eget dussin
+                        const customItems = item.items.map(subItem => `${subItem.name} - Antal: ${subItem.quantity}`).join("\n");
+                        return `Produkt: ${item.name}\n${customItems}\nTotalpris: ${item.price} SEK`;
+                    } else {
+                        // Hantera vanliga produkter
+                        return `${item.name} - Klass: ${item.selectedClass || ''} - Antal dussin: ${item.dozens || ''} - Pris: ${item.items ? item.price : item.price * item.dozens} SEK`;
+                    }
+                }).join("\n\n");
+
                 window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             };
 
+
             const getTotalPrice = () => {
-                return cart.reduce((total, item) => total + (item.price * item.dozens), 0);
+                return cart.reduce((total, item) => total + (item.items ? item.price : item.price * item.dozens), 0);
+            };
+
+            const addCustomDozenToCart = () => {
+                const totalItems = customDozen.reduce((total, item) => total + item.quantity, 0);
+                if (totalItems !== 12) {
+                    alert("Du måste välja exakt 12 bollar för att skapa ett eget dussin.");
+                    return;
+                }
+
+                const price = customDozen.reduce((total, item) => total + (item.price * item.quantity), 0);
+                const newCustomDozen = {
+                    id: `custom-${Date.now()}`,
+                    name: "Eget Dussin",
+                    items: customDozen,
+                    price,
+                };
+
+                setCart(prevCart => [...prevCart, newCustomDozen]);
+                setCustomDozen([]);
+            };
+
+            const updateCustomDozen = (product, quantity) => {
+                setCustomDozen(prevCustomDozen => {
+                    const existingItem = prevCustomDozen.find(item => item.id === product.id);
+                    if (existingItem) {
+                        return prevCustomDozen.map(item => item.id === product.id ? { ...item, quantity } : item);
+                    } else {
+                        return [...prevCustomDozen, { ...product, quantity }];
+                    }
+                });
             };
 
             return (
@@ -210,19 +267,33 @@
                             {cart.map((item, index) => (
                                 <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
                                     <div>
-                                        {item.name} - {item.selectedClass} - Antal dussin: {item.dozens}
+                                        {item.name}
+                                        {item.items ? (
+                                            <ul>
+                                                {item.items.map((subItem, subIndex) => (
+                                                    <li key={subIndex}>{subItem.name} - Antal: {subItem.quantity}</li>
+                                                ))}
+                                            </ul>
+                                        ) : (
+                                            ` - ${item.selectedClass} - Antal dussin: ${item.dozens}`
+                                        )}
                                     </div>
                                     <div>
-                                        <input
-                                            type="number"
-                                            min="1"
-                                            value={item.dozens}
-                                            onChange={(e) => updateCartItemDozens(index, Number(e.target.value))}
-                                            className="mr-2"
-                                        />
+                                        {item.items ? null : (
+                                            <input
+                                                type="number"
+                                                min="1"
+                                                value={item.dozens}
+                                                onChange={(e) => updateCartItemDozens(index, Number(e.target.value))}
+                                                className="mr-2"
+                                            />
+                                        )}
                                         <Button variant="danger" className="remove-button" onClick={() => removeFromCart(index)}>
                                             <i className="fas fa-trash"></i>
                                         </Button>
+                                    </div>
+                                    <div>
+                                        <span>{item.price} SEK</span>
                                     </div>
                                 </li>
                             ))}
@@ -237,7 +308,7 @@
 
                     <Jumbotron className="text-center">
                         <h1>Välkommen till Forebollar!</h1>
-                        <p>Här hittar du de bästa golfbollarna till de bästa priserna.</p>
+                        <p>Här hittar du de bästa begangnade golfbollarna till de bästa priserna.</p>
                     </Jumbotron>
 
                     <Container>
@@ -248,6 +319,37 @@
                                 </Col>
                             ))}
                         </Row>
+                        <hr />
+                        <h2>Designa ditt eget dussin</h2>
+                        <Table striped bordered hover>
+                            <thead>
+                                <tr>
+                                    <th>Bild</th>
+                                    <th>Namn</th>
+                                    <th>Pris</th>
+                                    <th>Antal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {customProducts.map(product => (
+                                    <tr key={product.id}>
+                                        <td><img src={product.image} alt={product.name} style={{ width: '50px' }} /></td>
+                                        <td>{product.name}</td>
+                                        <td>{product.price} SEK</td>
+                                        <td>
+                                            <Form.Control
+                                                type="number"
+                                                min="0"
+                                                max="12"
+                                                value={customDozen.find(item => item.id === product.id)?.quantity || 0}
+                                                onChange={(e) => updateCustomDozen(product, Number(e.target.value))}
+                                            />
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                        <Button variant="primary" onClick={addCustomDozenToCart}>Lägg till eget dussin i varukorgen</Button>
                     </Container>
                 </>
             );
