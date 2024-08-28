@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forebollar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            box-sizing: border-box;
+        }
+
+        /* Global Styling */
+        h2 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 30px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.7);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            transition: background-color 0.3s ease;
+            z-index: 1000;
+        }
+
+        .navbar.scrolled {
+            background-color: #fff;
+            color: black;
+        }
+
+        .navbar a {
+            color: black;
+            text-decoration: none;
+            margin-right: 20px;
+            font-size: 18px;
+        }
+
+        .logo img {
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        /* Jumbotron Styling */
+        .jumbotron {
+            height: 500px;
+            background-image: url('jumbo.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .jumbotron h1 {
+            font-size: 36px;
+            margin: 0;
+        }
+
+        .jumbotron button {
+            padding: 12px 25px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            background-color: #28a745;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .jumbotron button:hover {
+            background-color: #218838;
+        }
+
+        /* Brand Section Styling */
+        .brand-section {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            background-color: black;
+            padding: 20px;
+        }
+
+        .brand {
+            position: relative;
+            width: 100%;
+            padding-top: 100%; /* This makes the div a square */
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #333;
+        }
+
+        .brand img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .brand:hover img {
+            transform: scale(1.1);
+        }
+
+        .brand h3 {
+            position: absolute;
+            color: white;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin: 0;
+            bottom: 50px;
+            text-align: center;
+            width: 80%;
+        }
+
+        .brand a {
+            position: absolute;
+            bottom: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            text-align: center;
+            width: 80%;
+        }
+
+        .brand a:hover {
+            background-color: #0056b3;
+        }
+
+        /* New Product Section Styling */
+        .product-section {
+            margin: 50px 0;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .product-carousel {
+            display: flex;
+            overflow-x: scroll;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .product {
+            flex: 0 0 80%;
+            max-width: 300px;
+            margin-right: 20px;
+            scroll-snap-align: start;
+            background-color: #f8f8f8;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .product h3 {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+
+        .product p {
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .product .price {
+            font-size: 22px;
+            color: #000;
+            margin: 10px 0;
+        }
+
+        .product a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .product a:hover {
+            background-color: #0056b3;
+        }
+
+        .scroll-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        .scroll-buttons button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .scroll-buttons button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Footer Styling */
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 14px;
+        }
+
+        /* Cart Section Styling */
+        .cart-container {
+            position: fixed;
+            top: 80px; /* Adjust based on navbar height */
+            right: 20px;
+            width: 300px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            z-index: 1000;
+            display: none; /* Hidden by default */
+        }
+
+        .cart-container h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .cart-container ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .cart-container li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-container li .remove-btn {
+            background: none;
+            border: none;
+            color: red;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .cart-container .cart-total {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.25rem;
+        }
+
+        .cart-container button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        /* Responsive Styling */
+        @media (min-width: 768px) {
+            .navbar a {
+                font-size: 18px;
+            }
+
+            .brand-section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .jumbotron h1 {
+                font-size: 48px;
+            }
+
+            .jumbotron button {
+                font-size: 18px;
+            }
+
+            .product-carousel {
+                flex-wrap: nowrap;
+            }
+
+            .product {
+                flex: 0 0 300px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .brand-section {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar" id="navbar">
+        <div class="logo">
+            <img src="logo.png" alt="logo">
+        </div>
+        <div style="margin-right: 50px;">
+            <a href="#products">Produkter</a>
+            <a href="#cart" onclick="toggleCart()">Varukorg</a>
+        </div>
+    </div>
+
+    <!-- Jumbotron -->
+    <div class="jumbotron">
+        <div>
+            <h1>Välkommen till Forebollar</h1>
+            <button onclick="scrollToSection('products')">Se våra produkter</button>
+        </div>
+    </div>
+
+    <!-- Brand Section -->
+    <div class="brand-section">
+        <div class="brand">
+            <img src="taylormade-logo.jpg" alt="TaylorMade">
+            <h3>TaylorMade</h3>
+            <a href="taylormade.html">Läs mer</a>
+        </div>
+        <div class="brand">
+            <img src="titleist-logo.jpg" alt="Titleist">
+            <h3>Titleist</h3>
+            <a href="titleist.html">Läs mer</a>
+        </div>
+        <div class="brand">
+            <img src="callaway-logo.jpg" alt="Callaway">
+            <h3>Callaway</h3>
+            <a href="callaway.html">Läs mer</a>
+        </div>
+        <div class="brand">
+            <img src="golf-logo.jpg" alt="Ping">
+            <h3>Floridabollar</h3>
+            <a href="#">Läs mer</a>
+        </div>
+    </div>
+
+    <!-- New Product Section -->
+    <div class="product-section" id="products">
+        <h2>Populära Golfbollar</h2>
+        <div class="scroll-buttons">
+            <button onclick="scrollCarousel(-300)">‹</button>
+            <button onclick="scrollCarousel(300)">›</button>
+        </div>
+        <div class="product-carousel" id="product-carousel">
+            <div class="product">
+                <img src="Golfbollar/Pro-V1.jpg" alt="Golfball 1">
+                <h3>Titleist Pro V1</h3>
+                <p>En av de mest populära bollarna.</p>
+                <div class="price">Från 80 kr</div>
+                <a href="#">Läs mer</a>
+            </div>
+            <div class="product">
+                <img src="Golfbollar/florida-mix.jpg" alt="Golfball 3">
+                <h3>Floridabollar</h3>
+                <p>Bra för dig och plånboken.</p>
+                <div class="price">Från 40 kr</div>
+                <a href="#">Läs mer</a>
+            </div>
+            <div class="product">
+                <img src="Golfbollar/taylormade-tp5.jpg" alt="Golfball 2">
+                <h3>TaylorMade TP5</h3>
+                <p>Perfekt för maximal kontroll.</p>
+                <div class="price">Från 80 kr</div>
+                <a href="#">Läs mer</a>
+            </div>
+            <div class="product">
+                <img src="Golfbollar/chromesoft.jpg" alt="Golfball 3">
+                <h3>Callaway Chrome Soft</h3>
+                <p>För bästa känsla och prestanda.</p>
+                <div class="price">Från 60 kr</div>
+                <a href="#">Läs mer</a>
+            </div>
+            <div class="product">
+                <img src="Golfbollar/Pro-V1x.jpg" alt="Golfball 1">
+                <h3>Titleist Pro V1x</h3>
+                <p>En Pro V1 som går längre.</p>
+                <div class="price">Från 80 kr</div>
+                <a href="#">Läs mer</a>
+            </div>
+            <div class="product">
+                <img src="Golfbollar/taylormade-pix.jpg" alt="Golfball 2">
+                <h3>TaylorMade TP5 Pix</h3>
+                <p>För hög spinn och mycket känsla.</p>
+                <div class="price">Från 85 kr</div>
+                <a href="#">Läs mer</a>
+            </div>
+            <div class="product">
+                <img src="Golfbollar/färg.jpg" alt="Golfball 1">
+                <h3>Färgbollar</h3>
+                <p>"Ögongodis".</p>
+                <div class="price">Från 65 kr</div>
+                <a href="#">Läs mer</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Section -->
+    <div class="cart-container" id="cart-container">
+        <h2>Din Varukorg</h2>
+        <ul id="cart-items"></ul>
+        <div class="cart-total">
+            Totalt: <span id="cart-total">0</span> kr
+        </div>
+        <button onclick="submitOrder()">Skicka Beställning</button>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2024 Forebollar. Billiga golfbollar.</p>
+    </div>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function toggleCart() {
+            const cartContainer = document.getElementById('cart-container');
+            cartContainer.style.display = cartContainer.style.display === 'none' || cartContainer.style.display === '' ? 'block' : 'none';
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            const totalElement = document.getElementById('cart-total');
+            cartItems.innerHTML = '';
+
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    ${item.name} (${item.quantity} x ${item.sorting}) - ${item.price} kr
+                    <button class="remove-btn" onclick="removeFromCart(${index})">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                `;
+                cartItems.appendChild(listItem);
+                total += item.price * item.quantity;
+            });
+
+            totalElement.innerText = total.toFixed(2);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCart();
+        }
+
+        function submitOrder() {
+            if (cart.length === 0) {
+                alert("Din varukorg är tom!");
+                return;
+            }
+
+            const orderDetails = cart.map(item => `${item.name} (${item.quantity} x ${item.sorting}) - ${item.price} kr`).join('\n');
+            const total = document.getElementById('cart-total').innerText;
+
+            const emailBody = `Följande beställning har gjorts:\n\n${orderDetails}\n\nTotal: ${total} kr`;
+
+            window.location.href = `mailto:forebollar@gmail.com?subject=Beställning&body=${encodeURIComponent(emailBody)}`;
+
+            localStorage.removeItem('cart');
+            cart.length = 0;
+            updateCart();
+        }
+
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        window.onscroll = function() {
+            var navbar = document.getElementById("navbar");
+            if (window.pageYOffset > 50) {
+                navbar.classList.add("scrolled");
+            } else {
+                navbar.classList.remove("scrolled");
+            }
+        };
+
+        function scrollCarousel(amount) {
+            var carousel = document.getElementById('product-carousel');
+            carousel.scrollBy({
+                left: amount,
+                behavior: 'smooth'
+            });
+        }
+
+        window.onload = function() {
+            updateCart();
+        };
+    </script>
+</body>
+</html>
