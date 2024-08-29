@@ -15,7 +15,7 @@
         }
 
         .jumbotron {
-            background-image: url('callaway-jumbo.jpg'); /* Replace with your image URL */
+            background-image: url('florida-jumbo.jpg'); /* Replace with your image URL */
             background-size: cover;
             background-position: center;
             height: 400px;
@@ -197,8 +197,7 @@
 
         /* Media Query för mindre skärmar */
         @media (max-width: 600px) {
-            .cart-container {
-                width: 100%; /* Full bredd på små skärmar */
+            .cart-container { /* Full bredd på små skärmar */
                 max-width: 100px; /* Maximal bredd för större mobilskärmar */
                 top: 20px; /* Placering när den är mindre */
                 right: 0; /* Justera positionen på mindre skärmar */
@@ -212,7 +211,7 @@
 
     <!-- Jumbotron -->
     <div class="jumbotron">
-        <h1>Callaway</h1>
+        <h1>Blandade Märken</h1>
     </div>
 
     <!-- Product Flow -->
@@ -238,19 +237,29 @@
     <script>
         const products = [
             {
-                name: "Callaway Chrome Soft",
-                image: "Golfbollar/chromesoft.jpg",
-                basePrice: 65
-            },
-            {
-                name: "Callaway ERC Soft",
-                image: "Golfbollar/erc-soft.jpg",
+                name: "Srixon Mix",
+                image: "Golfbollar/srixon.jpg",
                 basePrice: 60
             },
             {
-                name: "Callaway Supersoft",
-                image: "Golfbollar/callaway-supersoft.jpg",
-                basePrice: 50
+                name: "Bridgestone Mix",
+                image: "Golfbollar/tour-b-xs.jpg",
+                basePrice: 60
+            },
+            {
+                name: "Florida Mix",
+                image: "Golfbollar/florida-mix.jpg",
+                basePrice: 35
+            },
+            {
+                name: "Färg Mix",
+                image: "Golfbollar/färg-mix.jpg",
+                basePrice: 70
+            },
+            {
+                name: "Vice Mix",
+                image: "Golfbollar/vice.jpg",
+                basePrice: 60
             },
             // Lägg till fler produkter här
         ];
