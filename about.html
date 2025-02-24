@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Om Oss - Forebollar</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #222;
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transform: translateY(-100%);
+            animation: slideDown 0.8s ease-out forwards;
+            z-index: 1000;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+            margin-right: 40px;
+        }
+        .nav-links li {
+            display: inline;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #222;
+            font-size: 18px;
+            font-weight: bold;
+            transition: color 0.3s, transform 0.3s;
+            position: relative;
+        }
+        .nav-links a:hover {
+            color: #222;
+            transform: scale(1.1);
+        }
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            margin-right: 50px;
+        }
+        .menu-toggle div {
+            width: 30px;
+            height: 3px;
+            background: #222;
+            margin: 5px 0;
+        }
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+        .hero {
+            height: 400px;
+            background: url('hero.jpg') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        .hero h1 {
+            font-size: 48px;
+            padding: 20px;
+            border-radius: 10px;
+            color: #fff;
+        }
+        .about-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+        }
+        .about-content {
+            display: flex;
+            width: 80%;
+            max-width: 1000px;
+            margin-bottom: 50px;
+        }
+        .about-content img {
+            width: 50%;
+            border-radius: 10px;
+        }
+        .about-text {
+            width: 50%;
+            padding: 20px;
+        }
+        .about-text h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        footer {
+            background-color: #222;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+                background-color: #fff;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                padding: 20px;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .menu-toggle {
+                display: flex;
+            }
+            .about-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .about-content img, .about-text {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">FOREBOLLAR</div>
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Hem</a></li>
+            <li><a href="#">Om oss</a></li>
+            <li><a href="contact.html">Kontakt</a></li>
+        </ul>
+    </nav>
+    <section class="hero">
+        <h1>Om Forebollar</h1>
+    </section>
+    <section class="about-section">
+        <div class="about-content">
+            <img src="vision.png" alt="Bild 2" style="margin-top: -50px;">
+            <div class="about-text">
+                <h2>Vår Vision</h2>
+                <p>Forebollars vision är att ge golfbollar ett nytt liv och göra golf både mer hållbart och prisvärt. Genom att återvinna och sälja begagnade golfbollar i hög kvalitet bidrar vi till mindre svinn och en grönare framtid för golfen. Vi vill göra smarta val enkla för alla golfare!</p>
+            </div>
+        </div>
+        <center>
+            <hr style="width: 50px; margin: 20px 0px; height: 1px; background: #222;">
+        </center>
+        <div class="about-content">
+            <div class="about-text">
+                <h2>Våra Priser</h2>
+                <p>Hos Forebollar erbjuder vi konkurrenskraftiga priser på begagnade golfbollar med god kvalitet. Jämfört med andra företag, som ofta säljer golfbollar till fullpris så har vi kanske bäst pris i helsingborg, vi tar exemplevis endast 200kr för ett dussin "Titleist ProV1". Tillskillnad från "Dormy" som tar ordinarie 649kr eller "Out of bounds" som är #1 på begagnade golfbolls marknaden, dem tar ordinarie 400kr. Så välj oss för bättre kvalitet till lägre pris!</p>
+            </div>
+            <img src="priser.png" alt="Bild 1">
+        </div>
+        <center>
+            <hr style="width: 50px; margin: 20px 0px; height: 1px; background: #222;">
+        </center>
+        <div class="about-content">
+            <img src="order.png" alt="Bild 1" style="margin-top: -50px;">
+            <div class="about-text">
+                <h2>Order info</h2>
+                <p>Hur funkar ens order? Du beställer via hemsidan och skickar en order, därefter får du ett mail från oss på forebollar <span style="font-weight: bold;">(Om du inte får en order bekräftelse inom 48h så skicka igen och dubbelkolla så att du använder rätt mail.)</span> kring din beställning och när du kan komma och hämta upp din order. Betalning sker vid upphämtning av order. Vid extra frågor kontakta oss på: "forebollar@gmail.com".</p>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <a href="mailto:forebollar@gmail.com">Kontakta oss</a>
+        <p>FOREBOLLAR</p>
+    </footer>
+    <script>
+        function toggleMenu() {
+            const menu = document.querySelector('.nav-links');
+            menu.classList.toggle('active');
+        }
+        function sendMail(event) {
+            event.preventDefault();  // Hindra standard formulärskickning
+    
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+    
+            const mailtoLink = `mailto:forebollar@gmail.com?subject=Kontaktformulär&body=Från: ${name}%0D%0AEmail: ${email}%0D%0A%0D%0AMeddelande:%0D%0A${encodeURIComponent(message)}`;
+    
+            window.location.href = mailtoLink;
+        }
+    </script>
+</body>
+</html>

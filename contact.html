@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontakta Oss - Forebollar</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #222;
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+            margin-right: 40px;
+        }
+        .nav-links li {
+            display: inline;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #222;
+            font-size: 18px;
+            font-weight: bold;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            margin-right: 50px;
+        }
+        .menu-toggle div {
+            width: 30px;
+            height: 3px;
+            background: #222;
+            margin: 5px 0;
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+                background-color: #fff;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                padding: 20px;
+            }
+            .nav-links li {
+                margin: 10px 0;
+            }
+            .menu-toggle {
+                display: flex;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+        }
+        .hero {
+            height: 400px;
+            background: url('hero.jpg') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        .hero h1 {
+            font-size: 48px;
+            padding: 20px;
+            border-radius: 10px;
+            color: #fff;
+        }
+        .contact-section {
+            margin: 60px auto;
+            padding: 20px;
+            max-width: 600px;
+            background-color: transparent;
+        }
+        .contact-section h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        .contact-section label {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .contact-section input,
+        .contact-section textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+        }
+        .contact-section button {
+            background-color: #222;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .contact-section button:hover {
+            background-color: #555;
+        }
+        footer {
+            background-color: #222;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">FOREBOLLAR</div>
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Hem</a></li>
+            <li><a href="about.html">Om oss</a></li>
+            <li><a href="contact.html">Kontakt</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <h1>Kontakta Oss</h1>
+    </section>
+
+    <section class="contact-section">
+        <h2>Har du några frågor? Skicka oss ett meddelande!</h2>
+        <form id="contactForm" onsubmit="sendMail(event)">
+            <label for="name">Ditt namn</label>
+            <input type="text" id="name" name="name" required>
+        
+            <label for="email">Din e-post</label>
+            <input type="email" id="email" name="email" required>
+        
+            <label for="message">Ditt meddelande</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+        
+            <button type="submit">Skicka</button>
+        </form>                
+    </section>
+
+    <footer>
+        <div>
+            <a href="mailto:forebollar@gmail.com" style="color: white; text-decoration: none; margin: 0 10px;">Kontakta oss</a>
+        </div>
+        <p>FOREBOLLAR</p>
+    </footer>
+    
+    <script>
+        function sendMail(event) {
+            event.preventDefault();  // Hindra standard formulärskickning
+    
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+    
+            const mailtoLink = `mailto:forebollar@gmail.com?subject=Kontaktformulär&body=Från: ${name}%0D%0AEmail: ${email}%0D%0A%0D%0AMeddelande:%0D%0A${encodeURIComponent(message)}`;
+    
+            window.location.href = mailtoLink;
+        }
+        function toggleMenu() {
+            const menu = document.querySelector('.nav-links');
+            menu.classList.toggle('active');
+        }
+    </script>
+    
+</body>
+</html>
