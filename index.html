@@ -92,16 +92,24 @@
             height: 400px;
             background: url('hero.jpg') center/cover no-repeat;
             display: flex;
+            flex-direction: column; /* Stack elements vertically */
             align-items: center;
             justify-content: center;
             text-align: center;
             padding: 20px;
         }
+
         .hero h1 {
             font-size: 48px;
             padding: 20px;
             border-radius: 10px;
             color: #fff;
+        }
+        .hero p {
+            font-size: 14px;
+            border-radius: 10px;
+            color: #fff;
+            margin-top: -10px;
         }
         .slider-container {
             overflow: hidden;
@@ -313,6 +321,22 @@
         .product {
             position: relative;
         }
+        .discount-badge {
+            background-color: red;
+            color: white;
+            padding: 5px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+
+        .compare-price, .compare-price-second {
+            font-size: 14px;
+            color: gray;
+            text-decoration: line-through;
+        }
+
 
     </style>
 </head>
@@ -334,6 +358,7 @@
 
     <section class="hero">
         <h1>Välkommen till Forebollar</h1>
+        <p>10% EXTRA OFF, på alla produkter under begränsad tid!</p>
     </section>
 
     <section class="slider-container">
@@ -404,18 +429,20 @@
         };
 
         products.forEach((product, index) => {
+            let discountedPrice = product.price * 0.9; // 10% rabatt
             let div = document.createElement("div");
             div.classList.add("product");
 
-            // Lagerstatus etikett
             let stockLabel = `<div class="stock-label" style="background-color: ${stockColors[product.stockStatus]}">${product.stockStatus}</div>`;
 
             div.innerHTML = `
                 ${stockLabel}
                 <img src="${product.image}" alt="${product.name}">
                 <h3>${product.name}</h3>
-                <p class="product-price" id="price-${index}">${product.price} kr</p>
-                <p class="compare-price">${product.comparePrice} kr</p>
+                <p class="discount-badge">10% EXTRA OFF</p>
+                <p class="product-price" id="price-${index}">${discountedPrice.toFixed(2)} kr</p>
+                <p class="compare-price"><s>${product.comparePrice} kr</s></p>  <!-- Jämförpris först -->
+                <p class="compare-price-second"><s>${product.price.toFixed(2)} kr</s></p> <!-- Ordinarie pris sen -->
                 <select id="quality-${index}" onchange="updatePrice(${index})">
                     <option value="secondhand">Andrasortering</option>
                     <option value="firsthand">Förstasortering</option>
@@ -426,20 +453,35 @@
             `;
 
             slider.appendChild(div);
+            product.price = discountedPrice; // Uppdatera priset för att användas senare
         });
+
+
+
 
         function updatePrice(index) {
             const qualitySelect = document.getElementById(`quality-${index}`);
             const priceElement = document.getElementById(`price-${index}`);
-            const originalPrice = products[index].price;
+            const comparePriceElement = document.querySelectorAll(".compare-price")[index];
+            const comparePriceSecondElement = document.querySelectorAll(".compare-price-second")[index];
+
+            let basePrice = products[index].price / 0.9; // Återställ till ursprungligt pris innan rabatt
+            let comparePrice = products[index].comparePrice;
 
             if (qualitySelect.value === "firsthand") {
-                const newPrice = originalPrice * 1.2; // 20% ökning för förstahandskvalitet
-                priceElement.textContent = `${newPrice.toFixed(2)} kr`;
-            } else {
-                priceElement.textContent = `${originalPrice} kr`;
+                basePrice *= 1.2; // Öka med 20% för förstasortering
+                comparePrice *= 1.2;
             }
+
+            let discountedPrice = basePrice * 0.9; // 10% rabatt
+            priceElement.textContent = `${discountedPrice.toFixed(2)} kr`;
+
+            // Uppdatera de strukna priserna
+            comparePriceElement.innerHTML = `<s>${comparePrice.toFixed(2)} kr</s>`;  // Jämförpris
+            comparePriceSecondElement.innerHTML = `<s>${basePrice.toFixed(2)} kr</s>`; // Ordinarie pris
         }
+
+
 
         function addToCart(index) {
             const qualitySelect = document.getElementById(`quality-${index}`);
