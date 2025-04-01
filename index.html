@@ -1,601 +1,558 @@
 <!DOCTYPE html>
-<html lang="sv">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hem - Forebollar</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #fff;
-            color: #222;
-        }
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: #fff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            transform: translateY(-100%);
-            animation: slideDown 0.8s ease-out forwards;
-            z-index: 1000;
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-        }
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 20px;
-            padding: 0;
-            margin: 0;
-            margin-right: 40px;
-        }
-        .nav-links li {
-            display: inline;
-        }
-        .nav-links a {
-            text-decoration: none;
-            color: #222;
-            font-size: 18px;
-            font-weight: bold;
-            transition: color 0.3s, transform 0.3s;
-            position: relative;
-        }
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -5px;
-            width: 100%;
-            height: 3px;
-            background-color: #fff;
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s ease-in-out;
-        }
-        .nav-links a:hover {
-            color: #222;
-            transform: scale(1.1);
-        }
-        .nav-links a:hover::after {
-            transform: scaleX(1);
-        }
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            margin-right: 50px;
-        }
-        .menu-toggle div {
-            width: 30px;
-            height: 3px;
-            background: #222;
-            margin: 5px 0;
-        }
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100%);
-            }
-            to {
-                transform: translateY(0);
-            }
-        }
-        .hero {
-            height: 400px;
-            background: url('hero.jpg') center/cover no-repeat;
-            display: flex;
-            flex-direction: column; /* Stack elements vertically */
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .hero h1 {
-            font-size: 48px;
-            padding: 20px;
-            border-radius: 10px;
-            color: #fff;
-        }
-        .hero p {
-            font-size: 14px;
-            border-radius: 10px;
-            color: #fff;
-            margin-top: -10px;
-        }
-        .slider-container {
-            overflow: hidden;
-            width: 90%;
-            margin: 40px auto;
-            position: relative;
-        }
-        .slider-container h1 {
-            font-size: xx-large;
-            text-align: center;
-        }
-        .product-slider {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
-        }
-        .product {
-            background: white;
-            color: black;
-            min-width: 250px;
-            margin: 10px;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            position: relative;
-        }
-        .product img {
-            width: 100%;
-            border-radius: 10px;
-        }
-        .product select {
-            border: solid #222 2px;
-            border-radius: none;
-        }
-        .compare-price {
-            font-size: 14px;
-            color: #555;
-            text-decoration: line-through;
-            margin-top: 10px;
-            position: absolute;
-            right: 20px;
-            top: 20px;
-        }
-        .add-to-cart {
-            background-color: transparent;
-            color: #222;
-            border: 2px solid #111;
-            padding: 10px 15px;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-        .arrows {
-            position: absolute;
-            top: 50%;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            transform: translateY(-50%);
-        }
-        .arrow {
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            font-size: 24px;
-            padding: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .arrow:hover {
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                text-align: center;
-                background-color: #fff;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                padding: 20px;
-            }
-            .nav-links li {
-                margin: 10px 0;
-            }
-            .menu-toggle {
-                display: flex;
-            }
-            .nav-links.active {
-                display: flex;
-            }
-        }
-        @media (max-width: 768px) {
-            .slider-container {
-                width: 100%;
-                margin: 20px auto;
-            }
-            .product-slider {
-                display: flex;
-                flex-wrap: nowrap;
-                transition: transform 0.5s ease-in-out;
-            }
-            .product {
-                min-width: 200px;
-                margin: 10px;
-                padding: 10px;
-            }
-            .arrow {
-                font-size: 18px;
-            }
-        }
-        @media (max-width: 480px) {
-            .product {
-                min-width: 150px;
-                padding: 8px;
-            }
-            .product-slider {
-                flex-direction: column;
-            }
-            .arrow {
-                display: none;
-            }
-            .stock-label {
-                padding: 3px 6px;
-                font-size: 10px;
-            }
-        }
-
-        /* Cart Section */
-        .cart-section {
-            margin-top: 40px;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-top: 2px solid #ddd;
-            border-radius: 8px;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .cart-section h2 {
-            font-size: 28px;
-            margin-bottom: 20px;
-            text-align: center;
-            color: #333;
-        }
-        .cart-section button {
-            background-color: transparent;
-            color: #222;
-            border: 2px solid #111;
-            padding: 10px 15px;
-            margin-top: 10px;
-            cursor: pointer;
-            text-align: center;
-        }
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 15px;
-            background-color: white;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            align-items: center;
-        }
-        .cart-item p {
-            margin: 0;
-            font-size: 16px;
-        }
-        .cart-item .product-name {
-            font-weight: bold;
-            color: #333;
-        }
-        .cart-item .price {
-            font-size: 18px;
-            color: #28a745;
-        }
-        .cart-item .remove-item {
-            color: #e74c3c;
-            font-size: 14px;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-        .cart-item .remove-item:hover {
-            color: #c0392b;
-        }
-        .cart-footer {
-            text-align: right;
-            padding: 20px 0;
-            border-top: 2px solid #ddd;
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-        }
-        .empty-cart {
-            text-align: center;
-            font-size: 18px;
-            color: #888;
-        }
-        .stock-label {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            color: white;
-            padding: 5px 10px;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 5px;
-        }
-        .product {
-            position: relative;
-        }
-        .discount-badge {
-            background-color: red;
-            color: white;
-            padding: 5px 10px;
-            font-size: 14px;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 5px;
-        }
-
-        .compare-price, .compare-price-second {
-            font-size: 14px;
-            color: gray;
-            text-decoration: line-through;
-        }
-
-
-    </style>
-</head>
-<body>
-    <nav class="navbar">
-        <div class="logo">FOREBOLLAR</div>
-        <div class="menu-toggle" onclick="toggleMenu()">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-        <ul class="nav-links">
-            <li><a href="index.html">Hem</a></li>
-            <li><a href="about.html">Info</a></li>
-            <li><a href="contact.html">Kontakt</a></li>
-            <li><a href="#varukorg">Varukorg</a></li>
-        </ul>
-    </nav>
-
-    <section class="hero">
-        <h1>Välkommen till Forebollar</h1>
-        <p>10% EXTRA OFF, på alla produkter under begränsad tid!</p>
-    </section>
-
-    <section class="slider-container">
-        <h1>Vårt sortiment</h1>
-        <div class="product-slider" id="slider"></div>
-        <div class="arrows">
-            <span class="arrow" id="prev">&#8592;</span>
-            <span class="arrow" id="next">&#8594;</span>
-        </div>
-    </section>
-
-    <section class="cart-section" id="varukorg">
-        <h2>Din Varukorg</h2>
-        <div id="cart-items">
-            <!-- Dynamically filled by JavaScript -->
-        </div>
-        <div class="cart-footer" id="cart-footer">
-            <!-- Total price will appear here -->
-        </div>
-        <center>
-            <button onclick="sendOrder()" style="display: block;">
-                Skicka Beställning
-            </button>  
-        </center>      
-    </section>
-
-    <footer style="background-color: #222; color: white; padding: 20px; text-align: center;">
-        <div>
-            <a href="mailto:forebollar@gmail.com" style="color: white; text-decoration: none; margin: 0 10px;">Kontakta oss</a>
-        </div>
-        <p>FOREBOLLAR</p>
-    </footer>    
-
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script>
-        emailjs.init("M8hlcCoiJItfe70PT"); // Ersätt med din EmailJS Public Key
-
-        function saveCart() {
-            localStorage.setItem("cart", JSON.stringify(cart));
-        }
-
-        function loadCart() {
-            return JSON.parse(localStorage.getItem("cart")) || [];
-        }
-
-        const products = [
-            { name: "Titleist Pro V1/V1x - 12st", price: 200, comparePrice: 399, image: "Golfbollar/Pro-V1.jpg", stockStatus: "Finns i lager" },
-            { name: "Taylormade TP5 Mix - 12st", price: 200, comparePrice: 399, image: "Golfbollar/taylormade-tp5.jpg", stockStatus: "Få i lager" },
-            { name: "Florida Mix - 25st", price: 150, comparePrice: 279, image: "Golfbollar/florida-mix.jpg", stockStatus: "Finns i lager" },
-            { name: "Tour Mix - 12st", price: 170, comparePrice: 325, image: "Golfbollar/tour-mix.jpg", stockStatus: "Finns i lager" },
-            { name: "Callaway Mix - 12st", price: 140, comparePrice: 250, image: "Golfbollar/callaway.jpg", stockStatus: "Finns i lager" },
-            { name: "Titleist Mix - 12st", price: 150, comparePrice: 299, image: "Golfbollar/titleist-mix.jpg", stockStatus: "Finns i lager" },
-            { name: "Färg Mix - 6st", price: 80, comparePrice: 190, image: "Golfbollar/färg-mix.jpg", stockStatus: "Finns i lager" },
-            { name: "Wilson Mix - 12st", price: 110, comparePrice: 160, image: "Golfbollar/wilson-mix.jpg", stockStatus: "Finns i lager" },
-            { name: "Srixon Mix - 12st", price: 130, comparePrice: 190, image: "Golfbollar/srixon.jpg", stockStatus: "Finns i lager" },
-        ];
-
-        let cart = loadCart();
-        const slider = document.getElementById("slider");
-        const prevButton = document.getElementById("prev");
-        const nextButton = document.getElementById("next");
-        let currentIndex = 0;
-
-        const stockColors = {
-            "Finns i lager": "green",
-            "Få i lager": "orange",
-            "Slutsåld": "red"
-        };
-
-        products.forEach((product, index) => {
-            let discountedPrice = product.price * 0.9; // 10% rabatt
-            let div = document.createElement("div");
-            div.classList.add("product");
-
-            let stockLabel = `<div class="stock-label" style="background-color: ${stockColors[product.stockStatus]}">${product.stockStatus}</div>`;
-
-            div.innerHTML = `
-                ${stockLabel}
-                <img src="${product.image}" alt="${product.name}">
-                <h3>${product.name}</h3>
-                <p class="discount-badge">10% EXTRA OFF</p>
-                <p class="product-price" id="price-${index}">${discountedPrice.toFixed(2)} kr</p>
-                <p class="compare-price"><s>${product.comparePrice} kr</s></p>  <!-- Jämförpris först -->
-                <p class="compare-price-second"><s>${product.price.toFixed(2)} kr</s></p> <!-- Ordinarie pris sen -->
-                <select id="quality-${index}" onchange="updatePrice(${index})">
-                    <option value="secondhand">Andrasortering</option>
-                    <option value="firsthand">Förstasortering</option>
-                </select>
-                <button class="add-to-cart" id="cart-btn-${index}" onclick="addToCart(${index})" ${product.stockStatus === "slutsåld" ? "disabled" : ""}>
-                    Lägg till i varukorg
-                </button>
-            `;
-
-            slider.appendChild(div);
-            product.price = discountedPrice; // Uppdatera priset för att användas senare
-        });
-
-
-
-
-        function updatePrice(index) {
-            const qualitySelect = document.getElementById(`quality-${index}`);
-            const priceElement = document.getElementById(`price-${index}`);
-            const comparePriceElement = document.querySelectorAll(".compare-price")[index];
-            const comparePriceSecondElement = document.querySelectorAll(".compare-price-second")[index];
-
-            let basePrice = products[index].price / 0.9; // Återställ till ursprungligt pris innan rabatt
-            let comparePrice = products[index].comparePrice;
-
-            if (qualitySelect.value === "firsthand") {
-                basePrice *= 1.2; // Öka med 20% för förstasortering
-                comparePrice *= 1.2;
-            }
-
-            let discountedPrice = basePrice * 0.9; // 10% rabatt
-            priceElement.textContent = `${discountedPrice.toFixed(2)} kr`;
-
-            // Uppdatera de strukna priserna
-            comparePriceElement.innerHTML = `<s>${comparePrice.toFixed(2)} kr</s>`;  // Jämförpris
-            comparePriceSecondElement.innerHTML = `<s>${basePrice.toFixed(2)} kr</s>`; // Ordinarie pris
-        }
-
-
-
-        function addToCart(index) {
-            const qualitySelect = document.getElementById(`quality-${index}`);
-            const selectedQuality = qualitySelect.value;
-            const product = products[index];
-
-            if (product.stockStatus === "slutsåld") {
-                alert("Denna produkt är slutsåld!");
-                return;
-            }
-
-            let finalPrice = product.price;
-            if (selectedQuality === "firsthand") {
-                finalPrice *= 1.2;
-            }
-
-            const productWithPrice = { ...product, price: finalPrice.toFixed(2) };
-            cart.push(productWithPrice);
-            saveCart();
-            updateCartDisplay();
-            alert(`${product.name} (${selectedQuality}) har lagts till i varukorgen!`);
-        }
-
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            saveCart();
-            updateCartDisplay();
-        }
-
-        function updateCartDisplay() {
-            const cartItemsContainer = document.getElementById("cart-items");
-            cartItemsContainer.innerHTML = "";
-            if (cart.length === 0) {
-                cartItemsContainer.innerHTML = "<p class='empty-cart'>Din varukorg är tom.</p>";
-                document.getElementById("cart-footer").innerHTML = "";
-            } else {
-                let totalPrice = 0;
-                cart.forEach((item, index) => {
-                    const cartItemDiv = document.createElement("div");
-                    cartItemDiv.classList.add("cart-item");
-                    cartItemDiv.innerHTML = `
-                        <p class="product-name">${item.name} (${item.price} kr)</p>
-                        <p><span class="remove-item" onclick="removeFromCart(${index})">Ta bort</span></p>
-                    `;
-                    cartItemsContainer.appendChild(cartItemDiv);
-                    totalPrice += parseFloat(item.price);
-                });
-                document.getElementById("cart-footer").innerHTML = `Total: ${totalPrice.toFixed(2)} kr`;
-            }
-        }
-
-        function sendOrder() {
-            let customerEmail = prompt("Ange din Gmail:");
-            if (!customerEmail || !customerEmail.includes("@gmail.com")) {
-                alert("Du måste ange en giltig Gmail-adress!");
-                return;
-            }
-
-            if (cart.length === 0) {
-                alert("Varukorgen är tom!");
-                return;
-            }
-
-            let orderDetails = cart.map(item => `- ${item.name} (${item.price} kr)`).join("\n");
-
-            let emailParams = {
-                customer_email: customerEmail,
-                order: orderDetails
-            };
-
-            emailjs.send("service_hopnllq", "template_9k0lu8p", emailParams)
-                .then(() => {
-                    alert("Beställning skickad!");
-                    cart = [];
-                    saveCart();
-                    updateCartDisplay();
-                })
-                .catch(err => alert("Fel vid skickning: " + err));
-        }
-
-        const updateSlider = () => {
-            const productWidth = document.querySelector('.product').offsetWidth + 20;
-            slider.style.transform = `translateX(-${currentIndex * productWidth}px)`;
-        };
-
-        const updateSliderOnResize = () => {
-            const productWidth = document.querySelector('.product').offsetWidth + 20;
-            slider.style.transform = `translateX(-${currentIndex * productWidth}px)`;
-        };
-
-        window.addEventListener('resize', updateSliderOnResize);
-
-        prevButton.onclick = () => {
-            if (currentIndex > 0) {
-                currentIndex--;
-                updateSlider();
-            }
-        };
-
-        nextButton.onclick = () => {
-            if (currentIndex < products.length - 1) {
-                currentIndex++;
-                updateSlider();
-            }
-        };
-
-        function toggleMenu() {
-            const menu = document.querySelector('.nav-links');
-            menu.classList.toggle('active');
-        }
-
-        updateCartDisplay();
-
-    </script>    
-    
-</body>
-</html>
+ <html lang="sv">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Hem - Forebollar</title>
+     <style>
+         body {
+             margin: 0;
+             font-family: Arial, sans-serif;
+             background-color: #fff;
+             color: #222;
+         }
+         .navbar {
+             position: fixed;
+             top: 0;
+             width: 100%;
+             background: #fff;
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             padding: 15px 20px;
+             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+             transform: translateY(-100%);
+             animation: slideDown 0.8s ease-out forwards;
+             z-index: 1000;
+         }
+         .logo {
+             font-size: 24px;
+             font-weight: bold;
+             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+         }
+         .nav-links {
+             list-style: none;
+             display: flex;
+             gap: 20px;
+             padding: 0;
+             margin: 0;
+             margin-right: 40px;
+         }
+         .nav-links li {
+             display: inline;
+         }
+         .nav-links a {
+             text-decoration: none;
+             color: #222;
+             font-size: 18px;
+             font-weight: bold;
+             transition: color 0.3s, transform 0.3s;
+             position: relative;
+         }
+         .nav-links a::after {
+             content: '';
+             position: absolute;
+             left: 0;
+             bottom: -5px;
+             width: 100%;
+             height: 3px;
+             background-color: #fff;
+             transform: scaleX(0);
+             transform-origin: left;
+             transition: transform 0.3s ease-in-out;
+         }
+         .nav-links a:hover {
+             color: #222;
+             transform: scale(1.1);
+         }
+         .nav-links a:hover::after {
+             transform: scaleX(1);
+         }
+         .menu-toggle {
+             display: none;
+             flex-direction: column;
+             cursor: pointer;
+             margin-right: 50px;
+         }
+         .menu-toggle div {
+             width: 30px;
+             height: 3px;
+             background: #222;
+             margin: 5px 0;
+         }
+         @keyframes slideDown {
+             from {
+                 transform: translateY(-100%);
+             }
+             to {
+                 transform: translateY(0);
+             }
+         }
+         .hero {
+             height: 400px;
+             background: url('hero.jpg') center/cover no-repeat;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             text-align: center;
+             padding: 20px;
+         }
+         .hero h1 {
+             font-size: 48px;
+             padding: 20px;
+             border-radius: 10px;
+             color: #fff;
+         }
+         .slider-container {
+             overflow: hidden;
+             width: 90%;
+             margin: 40px auto;
+             position: relative;
+         }
+         .slider-container h1 {
+             font-size: xx-large;
+             text-align: center;
+         }
+         .product-slider {
+             display: flex;
+             transition: transform 0.5s ease-in-out;
+         }
+         .product {
+             background: white;
+             color: black;
+             min-width: 250px;
+             margin: 10px;
+             padding: 20px;
+             border-radius: 10px;
+             text-align: center;
+             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+             position: relative;
+         }
+         .product img {
+             width: 100%;
+             border-radius: 10px;
+         }
+         .product select {
+             border: solid #222 2px;
+             border-radius: none;
+         }
+         .compare-price {
+             font-size: 14px;
+             color: #555;
+             text-decoration: line-through;
+             margin-top: 10px;
+             position: absolute;
+             right: 20px;
+             top: 20px;
+         }
+         .add-to-cart {
+             background-color: transparent;
+             color: #222;
+             border: 2px solid #111;
+             padding: 10px 15px;
+             margin-top: 10px;
+             cursor: pointer;
+         }
+         .arrows {
+             position: absolute;
+             top: 50%;
+             width: 100%;
+             display: flex;
+             justify-content: space-between;
+             transform: translateY(-50%);
+         }
+         .arrow {
+             background-color: rgba(0, 0, 0, 0.5);
+             color: white;
+             font-size: 24px;
+             padding: 10px;
+             cursor: pointer;
+             transition: background-color 0.3s;
+         }
+         .arrow:hover {
+             background-color: rgba(0, 0, 0, 0.8);
+         }
+         @media (max-width: 768px) {
+             .nav-links {
+                 display: none;
+                 flex-direction: column;
+                 width: 100%;
+                 text-align: center;
+                 background-color: #fff;
+                 position: absolute;
+                 top: 100%;
+                 left: 0;
+                 padding: 20px;
+             }
+             .nav-links li {
+                 margin: 10px 0;
+             }
+             .menu-toggle {
+                 display: flex;
+             }
+             .nav-links.active {
+                 display: flex;
+             }
+         }
+         @media (max-width: 768px) {
+             .slider-container {
+                 width: 100%;
+                 margin: 20px auto;
+             }
+             .product-slider {
+                 display: flex;
+                 flex-wrap: nowrap;
+                 transition: transform 0.5s ease-in-out;
+             }
+             .product {
+                 min-width: 200px;
+                 margin: 10px;
+                 padding: 10px;
+             }
+             .arrow {
+                 font-size: 18px;
+             }
+         }
+         @media (max-width: 480px) {
+             .product {
+                 min-width: 150px;
+                 padding: 8px;
+             }
+             .product-slider {
+                 flex-direction: column;
+             }
+             .arrow {
+                 display: none;
+             }
+             .stock-label {
+                 padding: 3px 6px;
+                 font-size: 10px;
+             }
+         }
+ 
+         /* Cart Section */
+         .cart-section {
+             margin-top: 40px;
+             padding: 20px;
+             background-color: #f9f9f9;
+             border-top: 2px solid #ddd;
+             border-radius: 8px;
+             max-width: 800px;
+             margin-left: auto;
+             margin-right: auto;
+         }
+         .cart-section h2 {
+             font-size: 28px;
+             margin-bottom: 20px;
+             text-align: center;
+             color: #333;
+         }
+         .cart-section button {
+             background-color: transparent;
+             color: #222;
+             border: 2px solid #111;
+             padding: 10px 15px;
+             margin-top: 10px;
+             cursor: pointer;
+             text-align: center;
+         }
+         .cart-item {
+             display: flex;
+             justify-content: space-between;
+             padding: 15px;
+             background-color: white;
+             margin-bottom: 10px;
+             border-radius: 8px;
+             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+             align-items: center;
+         }
+         .cart-item p {
+             margin: 0;
+             font-size: 16px;
+         }
+         .cart-item .product-name {
+             font-weight: bold;
+             color: #333;
+         }
+         .cart-item .price {
+             font-size: 18px;
+             color: #28a745;
+         }
+         .cart-item .remove-item {
+             color: #e74c3c;
+             font-size: 14px;
+             cursor: pointer;
+             text-decoration: underline;
+         }
+         .cart-item .remove-item:hover {
+             color: #c0392b;
+         }
+         .cart-footer {
+             text-align: right;
+             padding: 20px 0;
+             border-top: 2px solid #ddd;
+             font-size: 18px;
+             font-weight: bold;
+             color: #333;
+         }
+         .empty-cart {
+             text-align: center;
+             font-size: 18px;
+             color: #888;
+         }
+         .stock-label {
+             position: absolute;
+             top: 10px;
+             left: 10px;
+             color: white;
+             padding: 5px 10px;
+             font-size: 14px;
+             font-weight: bold;
+             border-radius: 5px;
+         }
+         .product {
+             position: relative;
+         }
+ 
+     </style>
+ </head>
+ <body>
+     <nav class="navbar">
+         <div class="logo">FOREBOLLAR</div>
+         <div class="menu-toggle" onclick="toggleMenu()">
+             <div></div>
+             <div></div>
+             <div></div>
+         </div>
+         <ul class="nav-links">
+             <li><a href="index.html">Hem</a></li>
+             <li><a href="about.html">Info</a></li>
+             <li><a href="contact.html">Kontakt</a></li>
+             <li><a href="#varukorg">Varukorg</a></li>
+         </ul>
+     </nav>
+ 
+     <section class="hero">
+         <h1>Välkommen till Forebollar</h1>
+     </section>
+ 
+     <section class="slider-container">
+         <h1>Vårt sortiment</h1>
+         <div class="product-slider" id="slider"></div>
+         <div class="arrows">
+             <span class="arrow" id="prev">&#8592;</span>
+             <span class="arrow" id="next">&#8594;</span>
+         </div>
+     </section>
+ 
+     <section class="cart-section" id="varukorg">
+         <h2>Din Varukorg</h2>
+         <div id="cart-items">
+             <!-- Dynamically filled by JavaScript -->
+         </div>
+         <div class="cart-footer" id="cart-footer">
+             <!-- Total price will appear here -->
+         </div>
+         <center>
+             <button onclick="sendOrder()" style="display: block;">
+                 Skicka Beställning
+             </button>  
+         </center>      
+     </section>
+ 
+     <footer style="background-color: #222; color: white; padding: 20px; text-align: center;">
+         <div>
+             <a href="mailto:forebollar@gmail.com" style="color: white; text-decoration: none; margin: 0 10px;">Kontakta oss</a>
+         </div>
+         <p>FOREBOLLAR</p>
+     </footer>    
+ 
+     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+     <script>
+         emailjs.init("M8hlcCoiJItfe70PT"); // Ersätt med din EmailJS Public Key
+ 
+         function saveCart() {
+             localStorage.setItem("cart", JSON.stringify(cart));
+         }
+ 
+         function loadCart() {
+             return JSON.parse(localStorage.getItem("cart")) || [];
+         }
+ 
+         const products = [
+             { name: "Titleist Pro V1/V1x - 12st", price: 200, comparePrice: 399, image: "Golfbollar/Pro-V1.jpg", stockStatus: "Finns i lager" },
+             { name: "Taylormade TP5 Mix - 12st", price: 200, comparePrice: 399, image: "Golfbollar/taylormade-tp5.jpg", stockStatus: "Få i lager" },
+             { name: "Florida Mix - 25st", price: 150, comparePrice: 279, image: "Golfbollar/florida-mix.jpg", stockStatus: "Finns i lager" },
+             { name: "Tour Mix - 12st", price: 170, comparePrice: 325, image: "Golfbollar/tour-mix.jpg", stockStatus: "Finns i lager" },
+             { name: "Callaway Mix - 12st", price: 140, comparePrice: 250, image: "Golfbollar/callaway.jpg", stockStatus: "Finns i lager" },
+             { name: "Titleist Mix - 12st", price: 150, comparePrice: 299, image: "Golfbollar/titleist-mix.jpg", stockStatus: "Finns i lager" },
+             { name: "Färg Mix - 6st", price: 80, comparePrice: 190, image: "Golfbollar/färg-mix.jpg", stockStatus: "Finns i lager" },
+             { name: "Wilson Mix - 12st", price: 110, comparePrice: 160, image: "Golfbollar/wilson-mix.jpg", stockStatus: "Finns i lager" },
+             { name: "Srixon Mix - 12st", price: 130, comparePrice: 190, image: "Golfbollar/srixon.jpg", stockStatus: "Finns i lager" },
+         ];
+ 
+         let cart = loadCart();
+         const slider = document.getElementById("slider");
+         const prevButton = document.getElementById("prev");
+         const nextButton = document.getElementById("next");
+         let currentIndex = 0;
+ 
+         const stockColors = {
+             "Finns i lager": "green",
+             "Få i lager": "orange",
+             "Slutsåld": "red"
+         };
+ 
+         products.forEach((product, index) => {
+             let div = document.createElement("div");
+             div.classList.add("product");
+ 
+             // Lagerstatus etikett
+             let stockLabel = `<div class="stock-label" style="background-color: ${stockColors[product.stockStatus]}">${product.stockStatus}</div>`;
+ 
+             div.innerHTML = `
+                 ${stockLabel}
+                 <img src="${product.image}" alt="${product.name}">
+                 <h3>${product.name}</h3>
+                 <p class="product-price" id="price-${index}">${product.price} kr</p>
+                 <p class="compare-price">${product.comparePrice} kr</p>
+                 <select id="quality-${index}" onchange="updatePrice(${index})">
+                     <option value="secondhand">Andrasortering</option>
+                     <option value="firsthand">Förstasortering</option>
+                 </select>
+                 <button class="add-to-cart" id="cart-btn-${index}" onclick="addToCart(${index})" ${product.stockStatus === "slutsåld" ? "disabled" : ""}>
+                     Lägg till i varukorg
+                 </button>
+             `;
+ 
+             slider.appendChild(div);
+         });
+ 
+         function updatePrice(index) {
+             const qualitySelect = document.getElementById(`quality-${index}`);
+             const priceElement = document.getElementById(`price-${index}`);
+             const originalPrice = products[index].price;
+ 
+             if (qualitySelect.value === "firsthand") {
+                 const newPrice = originalPrice * 1.2; // 20% ökning för förstahandskvalitet
+                 priceElement.textContent = `${newPrice.toFixed(2)} kr`;
+             } else {
+                 priceElement.textContent = `${originalPrice} kr`;
+             }
+         }
+ 
+         function addToCart(index) {
+             const qualitySelect = document.getElementById(`quality-${index}`);
+             const selectedQuality = qualitySelect.value;
+             const product = products[index];
+ 
+             if (product.stockStatus === "slutsåld") {
+                 alert("Denna produkt är slutsåld!");
+                 return;
+             }
+ 
+             let finalPrice = product.price;
+             if (selectedQuality === "firsthand") {
+                 finalPrice *= 1.2;
+             }
+ 
+             const productWithPrice = { ...product, price: finalPrice.toFixed(2) };
+             cart.push(productWithPrice);
+             saveCart();
+             updateCartDisplay();
+             alert(`${product.name} (${selectedQuality}) har lagts till i varukorgen!`);
+         }
+ 
+         function removeFromCart(index) {
+             cart.splice(index, 1);
+             saveCart();
+             updateCartDisplay();
+         }
+ 
+         function updateCartDisplay() {
+             const cartItemsContainer = document.getElementById("cart-items");
+             cartItemsContainer.innerHTML = "";
+             if (cart.length === 0) {
+                 cartItemsContainer.innerHTML = "<p class='empty-cart'>Din varukorg är tom.</p>";
+                 document.getElementById("cart-footer").innerHTML = "";
+             } else {
+                 let totalPrice = 0;
+                 cart.forEach((item, index) => {
+                     const cartItemDiv = document.createElement("div");
+                     cartItemDiv.classList.add("cart-item");
+                     cartItemDiv.innerHTML = `
+                         <p class="product-name">${item.name} (${item.price} kr)</p>
+                         <p><span class="remove-item" onclick="removeFromCart(${index})">Ta bort</span></p>
+                     `;
+                     cartItemsContainer.appendChild(cartItemDiv);
+                     totalPrice += parseFloat(item.price);
+                 });
+                 document.getElementById("cart-footer").innerHTML = `Total: ${totalPrice.toFixed(2)} kr`;
+             }
+         }
+ 
+         function sendOrder() {
+             let customerEmail = prompt("Ange din Gmail:");
+             if (!customerEmail || !customerEmail.includes("@gmail.com")) {
+                 alert("Du måste ange en giltig Gmail-adress!");
+                 return;
+             }
+ 
+             if (cart.length === 0) {
+                 alert("Varukorgen är tom!");
+                 return;
+             }
+ 
+             let orderDetails = cart.map(item => `- ${item.name} (${item.price} kr)`).join("\n");
+ 
+             let emailParams = {
+                 customer_email: customerEmail,
+                 order: orderDetails
+             };
+ 
+             emailjs.send("service_hopnllq", "template_9k0lu8p", emailParams)
+                 .then(() => {
+                     alert("Beställning skickad!");
+                     cart = [];
+                     saveCart();
+                     updateCartDisplay();
+                 })
+                 .catch(err => alert("Fel vid skickning: " + err));
+         }
+ 
+         const updateSlider = () => {
+             const productWidth = document.querySelector('.product').offsetWidth + 20;
+             slider.style.transform = `translateX(-${currentIndex * productWidth}px)`;
+         };
+ 
+         const updateSliderOnResize = () => {
+             const productWidth = document.querySelector('.product').offsetWidth + 20;
+             slider.style.transform = `translateX(-${currentIndex * productWidth}px)`;
+         };
+ 
+         window.addEventListener('resize', updateSliderOnResize);
+ 
+         prevButton.onclick = () => {
+             if (currentIndex > 0) {
+                 currentIndex--;
+                 updateSlider();
+             }
+         };
+ 
+         nextButton.onclick = () => {
+             if (currentIndex < products.length - 1) {
+                 currentIndex++;
+                 updateSlider();
+             }
+         };
+ 
+         function toggleMenu() {
+             const menu = document.querySelector('.nav-links');
+             menu.classList.toggle('active');
+         }
+ 
+         updateCartDisplay();
+ 
+     </script>    
+ 
+ </body>
