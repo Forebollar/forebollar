@@ -552,18 +552,32 @@
                     .catch(err => alert("Fel vid skickning: " + err));
             }
 
- 
-         const updateSlider = () => {
-             const productWidth = document.querySelector('.product').offsetWidth + 20;
-             slider.style.transform = `translateX(-${currentIndex * productWidth}px)`;
-         };
- 
-         const updateSliderOnResize = () => {
-             const productWidth = document.querySelector('.product').offsetWidth + 20;
-             slider.style.transform = `translateX(-${currentIndex * productWidth}px)`;
-         };
- 
-         window.addEventListener('resize', updateSliderOnResize);
+                let currentIndex = 0;
+                const sliderTrack = document.querySelector(".product-slider");
+                const prevBtn = document.getElementById("prev");
+                const nextBtn = document.getElementById("next");
+
+                function updateSlider() {
+                    const productWidth = document.querySelector(".product").offsetWidth + 20;
+                    sliderTrack.style.transform = `translateX(${-currentIndex * productWidth}px)`;
+                }
+
+                prevBtn.addEventListener("click", () => {
+                    if (currentIndex > 0) {
+                        currentIndex--;
+                        updateSlider();
+                    }
+                });
+
+                nextBtn.addEventListener("click", () => {
+                    if (currentIndex < products.length - 3) {
+                        currentIndex++;
+                        updateSlider();
+                    }
+                });
+
+                window.addEventListener("resize", updateSlider);
+                updateCartDisplay();
  
          prevButton.onclick = () => {
              if (currentIndex > 0) {
