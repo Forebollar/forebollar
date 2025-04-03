@@ -376,6 +376,30 @@
             cursor: pointer;
         }
 
+        @media (max-width: 768px) {
+            /* Centrerar hela slider-behållaren */
+            #slider {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;  /* Centrera produktkorten horisontellt */
+                align-items: center;      /* Centrera produktkorten vertikalt */
+            }
+
+            /* För produktkorten */
+            .product {
+                width: 90%;   /* Gör produktkorten smalare på små skärmar */
+                margin: 10px 0;  /* Lägger till vertikalt avstånd mellan korten */
+            }
+        }
+
+        /* Media Query för mycket små skärmar, t.ex. mobiltelefoner */
+        @media (max-width: 480px) {
+            /* Justera storleken på produktkortet för ännu mindre skärmar */
+            .product {
+                width: 95%;  /* Går ännu smalare för att passa bättre på små skärmar */
+            }
+        }
+
  
      </style>
  </head>
