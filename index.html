@@ -313,6 +313,69 @@
          .product {
              position: relative;
          }
+
+         .product {
+                position: relative;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                text-align: center;
+                background: white;
+                box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+                display: inline-block;
+                width: 200px;
+                margin: 10px;
+            }
+
+            .info-btn {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                background: none;
+                border: none;
+                font-size: 18px;
+                cursor: pointer;
+            }
+
+            .info-overlay {
+                display: none;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.7);
+                color: white;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 10px;
+                border-radius: 5px;
+                box-sizing: border-box; /* Ensure padding doesn't push it out of bounds */
+            }
+
+            .info-overlay p {
+                margin: 0 0 10px;
+            }
+
+            .info-overlay button {
+                background: white;
+                color: black;
+                border: none;
+                padding: 5px 10px;
+                cursor: pointer;
+            }
+
+
+        .info-overlay button {
+            background: none;
+            color: #fff;
+            border: 1px solid #fff;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
  
      </style>
  </head>
@@ -380,18 +443,18 @@
          }
  
          const products = [
-             { name: "Titleist Pro V1/V1x - 12st", price: 200, comparePrice: 399, image: "Golfbollar/Pro-V1.jpg", stockStatusFirsthand: "Slutsåld", stockStatusSecondhand: "Finns i lager" },
-             { name: "Taylormade TP5 Mix - 12st", price: 200, comparePrice: 399, image: "Golfbollar/taylormade-tp5.jpg", stockStatusFirsthand: "Få i lager", stockStatusSecondhand: "Få i lager"},
-             { name: "Florida Mix - 25st", price: 150, comparePrice: 279, image: "Golfbollar/florida-mix.jpg", stockStatusFirsthand: "Finns i lager", stockStatusSecondhand: "Finns i lager" },
-             { name: "Tour Mix - 12st", price: 170, comparePrice: 325, image: "Golfbollar/tour-mix.jpg", stockStatusFirsthand: "Finns i lager", stockStatusSecondhand: "Finns i lager" },
-             { name: "Callaway Mix - 12st", price: 140, comparePrice: 250, image: "Golfbollar/callaway.jpg", stockStatusFirsthand: "Finns i lager", stockStatusSecondhand: "Finns i lager" },
-             { name: "Titleist Mix - 12st", price: 150, comparePrice: 299, image: "Golfbollar/titleist-mix.jpg", stockStatusFirsthand: "Finns i lager", stockStatusSecondhand: "Finns i lager" },
-             { name: "Färg Mix - 6st", price: 80, comparePrice: 190, image: "Golfbollar/färg-mix.jpg", stockStatusFirsthand: "Finns i lager", stockStatusSecondhand: "Finns i lager" },
-             { name: "Wilson Mix - 12st", price: 110, comparePrice: 160, image: "Golfbollar/wilson-mix.jpg", stockStatusFirsthand: "Finns i lager", stockStatusSecondhand: "Finns i lager" },
-             { name: "Srixon Mix - 12st", price: 130, comparePrice: 190, image: "Golfbollar/srixon.jpg", stockStatusFirsthand: "Finns i lager", stockStatusSecondhand: "Finns i lager" },
-         ];
- 
-         let cart = loadCart();
+                { name: "Titleist Pro V1/V1x - 12st", price: 200, comparePrice: 399, image: "Golfbollar/Pro-V1.jpg", stockStatusFirsthand: "Slutsåld", stockStatusSecondhand: "Finns i lager", description: "Pro V1 är golfbollen som presterar maximalt i alla delar av spelet med ökad längd, låg spinn från tee och penetrerande bollflykt." },
+                { name: "Taylormade TP5 Mix - 12st", price: 200, comparePrice: 399, image: "Golfbollar/taylormade-tp5.jpg", stockStatusFirsthand: "Få i lager", stockStatusSecondhand: "Få i lager", description: "TP5, En 5-delad golfboll designad för att fungera för alla golfare som vill spela på en tourboll av högsta prestanda." },
+                { name: "Florida Mix - 25st", price: 150, comparePrice: 279, image: "Golfbollar/florida-mix.jpg", stockStatusFirsthand: "Finns i lager", stockStatusSecondhand: "Finns i lager", description: "En perfekt mix av golfbollar för dig som vill köpa prisvärda bollar utan att det spelar så stor roll exakt vilka modeller det är." },
+                { name: "Tour Mix - 12st", price: 170, comparePrice: 325, image: "Golfbollar/tour-mix.jpg", stockStatusFirsthand: "Finns i lager", stockStatusSecondhand: "Finns i lager", description: "En mix full av prisvärda tourbollar, I mixen kan följande bollar förekomma: Titleist Tour Soft/Speed, Callaway Chrome Soft/Tour, Bridgestone Tour B XS, Srixon Z-Star, Vice Pro, m.m." },
+                { name: "Callaway Mix - 12st", price: 140, comparePrice: 250, image: "Golfbollar/callaway.jpg", stockStatusFirsthand: "Finns i lager", stockStatusSecondhand: "Finns i lager", description: "Callaway Mix innehåller en blandning av olika modeller och generationer golfbollar från Callaway som passar alla spelstilar." },
+                { name: "Titleist Mix - 12st", price: 150, comparePrice: 299, image: "Golfbollar/titleist-mix.jpg", stockStatusFirsthand: "Finns i lager", stockStatusSecondhand: "Finns i lager", description: "Titleist Mix innehåller en mix av olika modeller och generationer golfbollar som passar alla spelstilar." },
+                { name: "Färg Mix - 6st", price: 80, comparePrice: 190, image: "Golfbollar/färg-mix.jpg", stockStatusFirsthand: "Finns i lager", stockStatusSecondhand: "Finns i lager", description: "Färgglada bollar från alla märken, för bättre synlighet på banan." },
+                { name: "Wilson Mix - 12st", price: 110, comparePrice: 160, image: "Golfbollar/wilson-mix.jpg", stockStatusFirsthand: "Finns i lager", stockStatusSecondhand: "Finns i lager", description: "En mix av Wilson golfbollar – bra kvalitet till ett fantastiskt pris, perfekt för spelare som vill ha pålitliga bollar utan att spräcka budgeten! " },
+                { name: "Srixon Mix - 12st", price: 130, comparePrice: 190, image: "Golfbollar/srixon.jpg", stockStatusFirsthand: "Finns i lager", stockStatusSecondhand: "Finns i lager", description: " Här kan du köpa en prisvärd mix av Srixons golfbollar, perfekt för medel och höghandicapare. Mixen innehåller populära modeller som Q-Star, Distance, Hi-Spin och AD333, m.m." },
+            ];
+
+            let cart = loadCart();
             const slider = document.getElementById("slider");
 
             const stockColors = {
@@ -401,34 +464,58 @@
             };
 
             products.forEach((product, index) => {
-                let div = document.createElement("div");
-                div.classList.add("product");
+                    let div = document.createElement("div");
+                    div.classList.add("product");
 
-                let selectedQuality = "secondhand"; // Standardval
-                let stockStatus = product.stockStatusSecondhand;
+                    let stockStatus = product.stockStatusSecondhand;
 
-                let stockLabel = document.createElement("div");
-                stockLabel.classList.add("stock-label");
-                stockLabel.style.backgroundColor = stockColors[stockStatus];
-                stockLabel.innerText = stockStatus;
+                    let stockLabel = document.createElement("div");
+                    stockLabel.classList.add("stock-label");
+                    stockLabel.style.backgroundColor = stockColors[stockStatus];
+                    stockLabel.innerText = stockStatus;
 
-                div.innerHTML = `
-                    <img src="${product.image}" alt="${product.name}">
-                    <h3>${product.name}</h3>
-                    <p class="product-price" id="price-${index}">${product.price} kr</p>
-                    <p class="compare-price">${product.comparePrice} kr</p>
-                    <select id="quality-${index}" onchange="updateStock(${index})">
-                        <option value="secondhand">Andrasortering</option>
-                        <option value="firsthand">Förstasortering</option>
-                    </select>
-                    <button class="add-to-cart" id="cart-btn-${index}" onclick="addToCart(${index})">
-                        Lägg till i varukorg
-                    </button>
-                `;
+                    div.innerHTML = `
+                        <img src="${product.image}" alt="${product.name}">
+                        <h3>${product.name}</h3>
+                        <p class="product-price" id="price-${index}">${product.price} kr</p>
+                        <p class="compare-price">${product.comparePrice} kr</p>
+                        <select id="quality-${index}" onchange="updateStock(${index})">
+                            <option value="secondhand">Andrasortering</option>
+                            <option value="firsthand">Förstasortering</option>
+                        </select>
+                        <button class="add-to-cart" id="cart-btn-${index}" onclick="addToCart(${index})">
+                            Lägg till i varukorg
+                        </button>
+                        <button class="info-btn" onclick="showInfo(${index})">ℹ️</button>
+                        <div class="info-overlay" id="info-${index}" style="display: none;">
+                            <p>${product.description}</p>
+                            <button onclick="hideInfo(${index})">Stäng</button>
+                        </div>
+                    `;
 
-                div.prepend(stockLabel); 
-                slider.appendChild(div);
-            });
+                    div.prepend(stockLabel);
+                    slider.appendChild(div);
+                });
+
+                function showInfo(index) {
+                    document.getElementById(`info-${index}`).style.display = "flex";
+                }
+
+                function hideInfo(index) {
+                    document.getElementById(`info-${index}`).style.display = "none";
+                }
+
+            function showInfo(index) {
+                document.getElementById(`info-${index}`).style.display = "flex";
+            }
+
+            function hideInfo(index) {
+                document.getElementById(`info-${index}`).style.display = "none";
+            }
+
+
+
+
 
             // Uppdatera lagerstatus baserat på kvalitet
             function updateStock(index) {
