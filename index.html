@@ -388,12 +388,34 @@
                 width: 90%;
                 margin: 10px 0px;
             }
+            .product select,
+            .product button {
+                display: block;
+                width: 100%;  /* Gör knapparna och select-fältet lika breda som produktkortet */
+                margin: 10px 0;  /* Lägger till lite vertikalt avstånd mellan knapparna */
+            }
+            .info-btn {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+            }
         }
 
         @media (max-width: 480px) {
             .product {
                 width: 70%; 
                 margin: 10px 0px;
+            }
+            .product select,
+            .product button {
+                display: block;
+                width: 100%;  /* Gör knapparna och select-fältet lika breda som produktkortet */
+                margin: 10px 0;  /* Lägger till lite vertikalt avstånd mellan knapparna */
+            }
+            .info-btn {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
             }
         }
 
