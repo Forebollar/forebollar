@@ -377,27 +377,23 @@
         }
 
         @media (max-width: 768px) {
-            /* Centrerar hela slider-behållaren */
             #slider {
                 display: flex;
                 flex-wrap: wrap;
-                justify-content: center;  /* Centrera produktkorten horisontellt */
-                align-items: center;      /* Centrera produktkorten vertikalt */
+                justify-content: center; 
+                align-items: center;   
             }
 
-            /* För produktkorten */
             .product {
-                width: 90%;   /* Gör produktkorten smalare på små skärmar */
-                margin: 10px 30px;  /* Lägger till vertikalt avstånd mellan korten */
+                width: 90%;
+                margin: 10px 0px;
             }
         }
 
-        /* Media Query för mycket små skärmar, t.ex. mobiltelefoner */
         @media (max-width: 480px) {
-            /* Justera storleken på produktkortet för ännu mindre skärmar */
             .product {
-                width: 90%;  /* Går ännu smalare för att passa bättre på små skärmar */
-                margin: 0px 35px;
+                width: 70%; 
+                margin: 10px 0px;
             }
         }
 
