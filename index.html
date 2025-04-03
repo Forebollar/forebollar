@@ -399,12 +399,6 @@
                 bottom: 10px;
                 right: 10px;
             }
-            .product .buttons-container {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-            }
         }
 
         @media (max-width: 480px) {
@@ -415,19 +409,13 @@
             .product select,
             .add-to-cart {
                 display: block;
-                width: 70%;  /* Gör knapparna och select-fältet lika breda som produktkortet */
+                width: 100%;  /* Gör knapparna och select-fältet lika breda som produktkortet */
                 margin: 10px 0;  /* Lägger till lite vertikalt avstånd mellan knapparna */
             }
             .info-btn {
                 position: absolute;
                 bottom: 10px;
                 right: 10px;
-            }
-            .product .buttons-container {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
             }
         }
 
@@ -534,13 +522,13 @@
                         <h3>${product.name}</h3>
                         <p class="product-price" id="price-${index}">${product.price} kr</p>
                         <p class="compare-price">${product.comparePrice} kr</p>
-                        <div class="buttons-container">
-                            <select>
-                                <option>Andrasortering</option>
-                                <option>Förstasortering</option>
-                            </select>
-                            <button class="add-to-cart">Lägg till i varukorg</button>
-                        </div>
+                        <select id="quality-${index}" onchange="updateStock(${index})">
+                            <option value="secondhand">Andrasortering</option>
+                            <option value="firsthand">Förstasortering</option>
+                        </select>
+                        <button class="add-to-cart" id="cart-btn-${index}" onclick="addToCart(${index})">
+                            Lägg till i varukorg
+                        </button>
                         <button class="info-btn" onclick="showInfo(${index})">ℹ️</button>
                         <div class="info-overlay" id="info-${index}" style="display: none;">
                             <p>${product.description}</p>
