@@ -4,105 +4,8 @@
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>Hem - Forebollar</title>
+     <link rel="stylesheet" href="style.css">
      <style>
-         body {
-             margin: 0;
-             font-family: Arial, sans-serif;
-             background-color: #fff;
-             color: #222;
-         }
-         .navbar {
-             position: fixed;
-             top: 0;
-             width: 100%;
-             background: #fff;
-             display: flex;
-             justify-content: space-between;
-             align-items: center;
-             padding: 15px 20px;
-             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-             transform: translateY(-100%);
-             animation: slideDown 0.8s ease-out forwards;
-             z-index: 1000;
-         }
-         .logo {
-             font-size: 24px;
-             font-weight: bold;
-             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-         }
-         .nav-links {
-             list-style: none;
-             display: flex;
-             gap: 20px;
-             padding: 0;
-             margin: 0;
-             margin-right: 40px;
-         }
-         .nav-links li {
-             display: inline;
-         }
-         .nav-links a {
-             text-decoration: none;
-             color: #222;
-             font-size: 18px;
-             font-weight: bold;
-             transition: color 0.3s, transform 0.3s;
-             position: relative;
-         }
-         .nav-links a::after {
-             content: '';
-             position: absolute;
-             left: 0;
-             bottom: -5px;
-             width: 100%;
-             height: 3px;
-             background-color: #fff;
-             transform: scaleX(0);
-             transform-origin: left;
-             transition: transform 0.3s ease-in-out;
-         }
-         .nav-links a:hover {
-             color: #222;
-             transform: scale(1.1);
-         }
-         .nav-links a:hover::after {
-             transform: scaleX(1);
-         }
-         .menu-toggle {
-             display: none;
-             flex-direction: column;
-             cursor: pointer;
-             margin-right: 50px;
-         }
-         .menu-toggle div {
-             width: 30px;
-             height: 3px;
-             background: #222;
-             margin: 5px 0;
-         }
-         @keyframes slideDown {
-             from {
-                 transform: translateY(-100%);
-             }
-             to {
-                 transform: translateY(0);
-             }
-         }
-         .hero {
-             height: 400px;
-             background: url('hero.jpg') center/cover no-repeat;
-             display: flex;
-             align-items: center;
-             justify-content: center;
-             text-align: center;
-             padding: 20px;
-         }
-         .hero h1 {
-             font-size: 48px;
-             padding: 20px;
-             border-radius: 10px;
-             color: #fff;
-         }
          .slider-container {
              overflow: hidden;
              width: 90%;
@@ -424,7 +327,9 @@
  </head>
  <body>
      <nav class="navbar">
-         <div class="logo">FOREBOLLAR</div>
+         <div class="logo">
+            <img src="logo.png">
+         </div>
          <div class="menu-toggle" onclick="toggleMenu()">
              <div></div>
              <div></div>
