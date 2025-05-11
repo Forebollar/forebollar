@@ -28,7 +28,6 @@ body {
 .navbar {
     position: sticky;
     top: 25px;
-    width: 100%;
     background: #fff;
     display: flex;
     justify-content: space-between;
