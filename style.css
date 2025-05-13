@@ -99,7 +99,22 @@ body {
     padding: 20px;
     border-radius: 10px;
     color: #fff;
-}        
+}
+
+.hero-content {
+    text-align: center;
+    color: white;
+}
+
+.hero-content p {
+    font-size: 18px;
+    margin-top: 5px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #fff;
+}
+
 footer {
     background-color: #222;
     color: white;
