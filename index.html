@@ -443,6 +443,9 @@
                             <option value="secondhand">Andrasortering</option>
                             <option value="firsthand">Förstasortering</option>
                         </select>
+                        <label style="display:block; margin-top:8px;">
+                            <input type="checkbox" id="lining-${index}"> Linjera bollarna (+20 kr)
+                        </label>
                         <button class="add-to-cart" id="cart-btn-${index}" onclick="addToCart(${index})">
                             Lägg till i varukorg
                         </button>
@@ -452,6 +455,7 @@
                             <button onclick="hideInfo(${index})">Stäng</button>
                         </div>
                     `;
+
 
                     div.prepend(stockLabel);
                     slider.appendChild(div);
@@ -513,6 +517,8 @@
                 const selectedQuality = qualitySelect.value;
                 const product = products[index];
 
+                const lined = document.getElementById(`lining-${index}`).checked;
+
                 if (selectedQuality === "firsthand" && product.stockStatusFirsthand === "Slutsåld") {
                     alert("Denna produkt är slutsåld!");
                     return;
@@ -524,19 +530,24 @@
 
                 let finalPrice = product.price;
                 if (selectedQuality === "firsthand") {
-                    finalPrice *= 1.2;
+                    finalPrice *= 1.5;
+                }
+
+                if (lined) {
+                    finalPrice += 20;
                 }
 
                 const productWithPrice = { 
                     ...product, 
                     price: finalPrice.toFixed(2), 
-                    quality: selectedQuality === "firsthand" ? "1:a sortering" : "2:a sortering" 
+                    quality: selectedQuality === "firsthand" ? "1:a sortering" : "2:a sortering",
+                    lining: lined ? "Linerad" : "Ej linerad"
                 };
 
                 cart.push(productWithPrice);
                 saveCart();
                 updateCartDisplay();
-                alert(`${product.name} (${productWithPrice.quality}) har lagts till i varukorgen!`);
+                alert(`${product.name} (${productWithPrice.quality}, ${productWithPrice.lining}) har lagts till i varukorgen!`);
             }
 
  
@@ -558,7 +569,7 @@
                         const cartItemDiv = document.createElement("div");
                         cartItemDiv.classList.add("cart-item");
                         cartItemDiv.innerHTML = `
-                            <p class="product-name">${item.name} (${item.quality}) - ${item.price} kr</p>
+                            <p class="product-name">${item.name} (${item.quality}, ${item.lining}) - ${item.price} kr</p>
                             <p><span class="remove-item" onclick="removeFromCart(${index})">Ta bort</span></p>
                         `;
                         cartItemsContainer.appendChild(cartItemDiv);
