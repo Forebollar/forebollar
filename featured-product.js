@@ -6,7 +6,7 @@ const featuredImages = [
   
   const featuredProduct = {
     name: "Golfboll Marker/Line",
-    price: 30,
+    price: 35,
     description: "Enkel bollmarkör och linesystem för bättre sikte och puttning. Perfekt för att markera din boll och linjera upp dina slag på greenen.",
   };
   
