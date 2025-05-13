@@ -1,7 +1,7 @@
 const featuredImages = [
-    "Forebollar-Ballmarkers/1.jpg",
-    "Forebollar-Ballmarkers/2.jpg",
-    "Forebollar-Ballmarkers/3.jpg",
+    "Forebollar-BallMarkers/1.jpg",
+    "Forebollar-BallMarkers/2.jpg",
+    "Forebollar-BallMarkers/3.jpg",
   ];
   
   const featuredProduct = {
