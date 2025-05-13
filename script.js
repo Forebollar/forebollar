@@ -1,6 +1,6 @@
 const texts = [
     "100% återvunna golfbollar",
-    "Snart släpper vi ball markers/liners!",
+    "Vi har nu släppt ball markers/liners!",
     "Billigare priser än någonsin på andrahanssortering!"
     ];
     let currentTextIndex = 0;
