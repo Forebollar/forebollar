@@ -323,6 +323,25 @@
             }
         }
 
+        .sale-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: red;
+            color: white;
+            padding: 5px 8px;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 3px;
+            z-index: 2;
+        }
+
+        .product-price {
+            margin-bottom: 5px;
+        }
+
+
+
 
  
      </style>
@@ -400,6 +419,27 @@
          function loadCart() {
              return JSON.parse(localStorage.getItem("cart")) || [];
          }
+
+         const sales = [
+            {
+                productName: "Tour Mix - 12st",
+                discountPercent: 15,
+                startDate: "2025-05-22",
+                endDate: "2025-06-25",
+                quality: "both"
+            },
+            {
+                productName: "*", // alla andrahandssorteringar får 20% rabatt
+                discountPercent: 20,
+                startDate: "2025-05-22",
+                endDate: "2025-06-10",
+                quality: "secondhand"
+            },
+
+
+        ];
+
+
  
          const products = [
                 { name: "Titleist Pro V1/V1x - 12st", price: 190, comparePrice: 399, image: "Golfbollar/Pro-V1.jpg", stockStatusFirsthand: "Finns i lager", stockStatusSecondhand: "Finns i lager", description: "Pro V1 är golfbollen som presterar maximalt i alla delar av spelet med ökad längd, låg spinn från tee och penetrerande bollflykt." },
@@ -424,21 +464,96 @@
                 "Slutsåld": "red"
             };
 
+            function getCurrentPrice(product, selectedQuality) {
+                const today = new Date();
+
+                // 1. Försök hitta en specifik rea först
+                let activeSale = sales.find(sale =>
+                    sale.productName === product.name &&
+                    (sale.quality === selectedQuality || sale.quality === "both") &&
+                    new Date(sale.startDate) <= today &&
+                    new Date(sale.endDate) >= today
+                );
+
+                // 2. Om ingen specifik, leta efter en generell ("*")
+                if (!activeSale) {
+                    activeSale = sales.find(sale =>
+                        sale.productName === "*" &&
+                        (sale.quality === selectedQuality || sale.quality === "both") &&
+                        new Date(sale.startDate) <= today &&
+                        new Date(sale.endDate) >= today
+                    );
+                }
+
+                // 3. Grundpris
+                let basePrice = product.price;
+
+                // 4. Om förstahand, multiplicera med 1.5
+                if (selectedQuality === "firsthand") {
+                    basePrice *= 1.5;
+                }
+
+                // 5. Tillämpa rea om aktiv
+                if (activeSale) {
+                    if (activeSale.salePrice !== undefined) {
+                        return activeSale.salePrice;
+                    } else if (activeSale.discountPercent !== undefined) {
+                        return basePrice * (1 - activeSale.discountPercent / 100);
+                    }
+                }
+
+                return basePrice;
+            }
+
+
+
+            function isOnSale(product, selectedQuality) {
+                const today = new Date();
+                return sales.some(sale =>
+                    sale.productName === product.name &&
+                    (sale.quality === selectedQuality || sale.quality === "both") &&
+                    new Date(sale.startDate) <= today &&
+                    new Date(sale.endDate) >= today
+                );
+            }
+
+
+
+
             products.forEach((product, index) => {
+                    const selectedQuality = "secondhand"; // defaultvisning
+
                     let div = document.createElement("div");
                     div.classList.add("product");
 
-                    let stockStatus = product.stockStatusSecondhand;
+                    const stockStatus = product.stockStatusSecondhand;
 
                     let stockLabel = document.createElement("div");
                     stockLabel.classList.add("stock-label");
                     stockLabel.style.backgroundColor = stockColors[stockStatus];
                     stockLabel.innerText = stockStatus;
 
+                    const currentPrice = getCurrentPrice(product, selectedQuality);
+                    const basePrice = selectedQuality === "firsthand" ? product.price * 1.5 : product.price;
+                    const onSale = currentPrice < basePrice;
+
+                    const saleBadge = onSale ? `<div class="sale-badge">REA</div>` : "";
+
                     div.innerHTML = `
+                        ${saleBadge}
                         <img src="${product.image}" alt="${product.name}">
                         <h3>${product.name}</h3>
-                        <p class="product-price" id="price-${index}">${product.price} kr</p>
+                        ${onSale ? `
+                            <p style="color: red; font-weight: bold; margin: 5px 0;">REA:</p>
+                            <p class="product-price" id="price-${index}">
+                                <span style="color: red;">${currentPrice.toFixed(2)} kr</span>
+                                <span style="text-decoration: line-through; color: #888; font-size: 14px; margin-left: 6px;">
+                                    ${basePrice.toFixed(2)} kr
+                                </span>
+                            </p>
+                        ` : `
+                            <p class="product-price" id="price-${index}">${basePrice.toFixed(2)} kr</p>
+                        `}
                         <p class="compare-price">${product.comparePrice} kr</p>
                         <select id="quality-${index}" onchange="updateStock(${index})">
                             <option value="secondhand">Andrasortering</option>
@@ -457,10 +572,10 @@
                         </div>
                     `;
 
-
                     div.prepend(stockLabel);
                     slider.appendChild(div);
                 });
+
 
                 function showInfo(index) {
                     document.getElementById(`info-${index}`).style.display = "flex";
@@ -500,18 +615,32 @@
             }
 
  
-         function updatePrice(index) {
-             const qualitySelect = document.getElementById(`quality-${index}`);
-             const priceElement = document.getElementById(`price-${index}`);
-             const originalPrice = products[index].price;
- 
-             if (qualitySelect.value === "firsthand") {
-                 const newPrice = originalPrice * 1.5; // 20% ökning för förstahandskvalitet
-                 priceElement.textContent = `${newPrice.toFixed(2)} kr`;
-             } else {
-                 priceElement.textContent = `${originalPrice} kr`;
-             }
-         }
+            function updatePrice(index) {
+                const qualitySelect = document.getElementById(`quality-${index}`);
+                const selectedQuality = qualitySelect.value;
+                const product = products[index];
+                const priceElement = document.getElementById(`price-${index}`);
+
+                const currentPrice = getCurrentPrice(product, selectedQuality);
+                const basePrice = selectedQuality === "firsthand" ? product.price * 1.5 : product.price;
+
+                // Kolla om det är rabatt (jämför currentPrice med basePrice)
+                const isSale = currentPrice < basePrice;
+
+                if (isSale) {
+                    priceElement.innerHTML = `
+                        <span style="color: red;">${currentPrice.toFixed(2)} kr</span>
+                        <span style="text-decoration: line-through; color: #888; font-size: 14px; margin-left: 6px;">
+                            ${basePrice.toFixed(2)} kr
+                        </span>
+                    `;
+                } else {
+                    priceElement.textContent = `${basePrice.toFixed(2)} kr`;
+                }
+            }
+
+
+
  
          function addToCart(index) {
                 const qualitySelect = document.getElementById(`quality-${index}`);
@@ -529,10 +658,8 @@
                     return;
                 }
 
-                let finalPrice = product.price;
-                if (selectedQuality === "firsthand") {
-                    finalPrice *= 1.5;
-                }
+                let finalPrice = getCurrentPrice(product, selectedQuality);
+
 
                 if (lined) {
                     finalPrice += 10;
