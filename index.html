@@ -537,7 +537,21 @@
                     const basePrice = selectedQuality === "firsthand" ? product.price * 1.5 : product.price;
                     const onSale = currentPrice < basePrice;
 
-                    const saleBadge = onSale ? `<div class="sale-badge">REA</div>` : "";
+                    let saleBadge = "";
+                        if (onSale) {
+                            const activeSale = sales.find(sale =>
+                                (sale.productName === product.name || sale.productName === "*") &&
+                                (sale.quality === selectedQuality || sale.quality === "both") &&
+                                new Date(sale.startDate) <= new Date() &&
+                                new Date(sale.endDate) >= new Date()
+                            );
+
+                            if (activeSale && activeSale.discountPercent) {
+                                saleBadge = `<div class="sale-badge">REA - ${activeSale.discountPercent}%</div>`;
+                            } else {
+                                saleBadge = `<div class="sale-badge">REA</div>`;
+                            }
+                        }
 
                     div.innerHTML = `
                         ${saleBadge}
