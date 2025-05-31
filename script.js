@@ -1,4 +1,5 @@
 const texts = [
+    "Juni Sale 10 off på hela sortimentet",
     "100% återvunna golfbollar",
     "Vi har nu släppt ball markers/liners!",
     "Billigare priser än någonsin på andrahanssortering!",
