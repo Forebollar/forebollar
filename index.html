@@ -212,7 +212,7 @@
              padding: 5px 10px;
              font-size: 14px;
              font-weight: bold;
-             border-radius: 5px;
+             border-radius: 0px 0px 5px 0px;
          }
          .product {
              position: relative;
@@ -221,24 +221,19 @@
          .product {
                 position: relative;
                 padding: 10px;
-                border: 1px solid #ddd;
-                border-radius: 5px;
+                border: none;
+                border-radius: 0px;
                 text-align: center;
-                background: white;
-                box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+                background: none;
                 display: inline-block;
+                box-shadow: none;
                 width: 200px;
                 margin: 10px;
             }
-
-            .info-btn {
-                position: absolute;
-                bottom: 10px;
-                right: 10px;
-                background: none;
+            
+            .product img {
+                border-radius: 0px;
                 border: none;
-                font-size: 18px;
-                cursor: pointer;
             }
 
             .info-overlay {
@@ -269,6 +264,44 @@
                 border: none;
                 padding: 5px 10px;
                 cursor: pointer;
+            }
+
+            .product {
+                position: relative; /* Gör att vi kan positionera element inne i produktkortet */
+            }
+
+            .product img {
+                display: block;
+                width: 100%;
+                border-radius: 0;
+            }
+
+            .add-to-cart {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                background: white;   /* så att den syns tydligt ovanpå bilden */
+                border: none;
+                padding: 5px;
+                cursor: pointer;
+                z-index: 2; /* så den hamnar över bilden */
+            }
+
+            .add-to-cart img {
+                height: 25px;
+                width: auto;
+            }
+
+            .info-btn {
+                position: absolute;
+                bottom: 10px;
+                left: 10px;
+                background: white;   /* synlig ovanpå bilden */
+                border: none;
+                padding: 5px;
+                cursor: pointer;
+                z-index: 2;
+                font-size: 16px;
             }
 
 
@@ -369,8 +402,8 @@
  
      <section class="hero">
         <div class="hero-content">
-            <h1>Summer Sale 10% OFF!</h1>
-            <p>Vi har inte bara dem mest prisvärd bollarna på marknaden utan nu även Boll markers/liners! <span><a style="color: #74e779;" href="#featured-product-section">Utforska nu!</a></span></p>
+            <h1>Golfbollar</h1>
+            <p></a></span></p>
         </div>
     </section>    
     
@@ -565,14 +598,11 @@
                         `}
                         <p class="compare-price">${product.comparePrice} kr</p>
                         <select id="quality-${index}" onchange="updateStock(${index})">
-                            <option value="secondhand">Andrasortering</option>
-                            <option value="firsthand">Förstasortering</option>
+                            <option value="secondhand">2:a Klass</option>
+                            <option value="firsthand">1:a Klass</option>
                         </select>
-                        <label style="display:block; margin-top:8px;">
-                            <input type="checkbox" id="lining-${index}"> Linjera bollarna (+10 kr)
-                        </label>
                         <button class="add-to-cart" id="cart-btn-${index}" onclick="addToCart(${index})">
-                            Lägg till i varukorg
+                            <img src="add-to-cart.png">
                         </button>
                         <button class="info-btn" onclick="showInfo(${index})">ℹ️</button>
                         <div class="info-overlay" id="info-${index}" style="display: none;">
