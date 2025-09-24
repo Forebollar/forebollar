@@ -270,6 +270,10 @@
                 position: relative; /* Gör att vi kan positionera element inne i produktkortet */
             }
 
+            .product select {
+                margin-bottom: 20px;
+            }
+
             .product img {
                 display: block;
                 width: 100%;
@@ -280,7 +284,7 @@
                 position: absolute;
                 bottom: 10px;
                 right: 10px;
-                background: white;   /* så att den syns tydligt ovanpå bilden */
+                background: none;   /* så att den syns tydligt ovanpå bilden */
                 border: none;
                 padding: 5px;
                 cursor: pointer;
@@ -296,7 +300,7 @@
                 position: absolute;
                 bottom: 10px;
                 left: 10px;
-                background: white;   /* synlig ovanpå bilden */
+                background: none;   /* synlig ovanpå bilden */
                 border: none;
                 padding: 5px;
                 cursor: pointer;
@@ -338,6 +342,36 @@
             }
         }
 
+        /* Små skärmar */
+            @media (max-width: 768px) {
+                .product {
+                    width: 90%;
+                    margin: 15px auto;
+                }
+
+                /* Gör om knapparna så de hamnar under bilden */
+                .add-to-cart,
+                .info-btn {
+                    position: static;       /* tar bort absoluta placeringen */
+                    display: inline-block;
+                    margin: 5px;           /* lite luft mellan knapparna */
+                }
+
+                .product select {
+                    display: block;
+                    width: 100%;
+                    margin-top: 10px;
+                }
+
+                /* Centrera knapparna snyggt */
+                .product-buttons {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-top: 10px;
+                }
+            }
+
+
         @media (max-width: 480px) {
             .product {
                 width: 70%; 
@@ -365,7 +399,7 @@
             padding: 5px 8px;
             font-size: 12px;
             font-weight: bold;
-            border-radius: 3px;
+            border-radius: 0px 0px 0px 5px;
             z-index: 2;
         }
 
@@ -456,9 +490,9 @@
          const sales = [
             {
                 productName: "*",
-                discountPercent: 10,
-                startDate: "2025-06-1",
-                endDate: "2025-06-30",
+                discountPercent: 0,
+                startDate: "2020-09-23",
+                endDate: "2020-06-30",
                 quality: "both"
             },
 
@@ -601,15 +635,18 @@
                             <option value="secondhand">2:a Klass</option>
                             <option value="firsthand">1:a Klass</option>
                         </select>
-                        <button class="add-to-cart" id="cart-btn-${index}" onclick="addToCart(${index})">
-                            <img src="add-to-cart.png">
-                        </button>
-                        <button class="info-btn" onclick="showInfo(${index})">ℹ️</button>
+                        <div class="product-buttons">
+                            <button class="info-btn" onclick="showInfo(${index})">ℹ️</button>
+                            <button class="add-to-cart" id="cart-btn-${index}" onclick="addToCart(${index})">
+                                <img src="add-to-cart.png">
+                            </button>
+                        </div>
                         <div class="info-overlay" id="info-${index}" style="display: none;">
                             <p>${product.description}</p>
                             <button onclick="hideInfo(${index})">Stäng</button>
                         </div>
                     `;
+
 
                     div.prepend(stockLabel);
                     slider.appendChild(div);
